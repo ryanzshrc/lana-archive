@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lana Archive</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -136,16 +137,9 @@
     button:hover {
       transform: scale(1.08);
     }
-
-    footer {
-      margin-top: 80px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding-top: 20px;
-      color: #777;
-      font-size: 0.9rem;
-    }
   </style>
 </head>
+
 <body>
   <div class="background"></div>
 
@@ -159,6 +153,7 @@
     </div>
 
     <div class="grid">
+
       <div class="card">
         <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1200&auto=format&fit=crop">
 
@@ -167,7 +162,6 @@
 
           <div class="bottom">
             <div class="title">Velvet Crowbar</div>
-
             <button onclick="toggleAudio('song1')">▶</button>
           </div>
 
@@ -183,7 +177,6 @@
 
           <div class="bottom">
             <div class="title">Serial Killer</div>
-
             <button onclick="toggleAudio('song2')">▶</button>
           </div>
 
@@ -199,31 +192,31 @@
 
           <div class="bottom">
             <div class="title">Queen of Disaster</div>
-
             <button onclick="toggleAudio('song3')">▶</button>
           </div>
 
           <audio id="song3" src="music/queenofdisaster.mp3"></audio>
         </div>
       </div>
-    </div>
 
+    </div>
+  </div>
 
   <script>
     function toggleAudio(id) {
-      const audio = document.getElementById(id)
+      const audio = document.getElementById(id);
 
       document.querySelectorAll('audio').forEach(a => {
         if (a !== audio) {
-          a.pause()
-          a.currentTime = 0
+          a.pause();
+          a.currentTime = 0;
         }
-      })
+      });
 
       if (audio.paused) {
-        audio.play()
+        audio.play();
       } else {
-        audio.pause()
+        audio.pause();
       }
     }
   </script>
