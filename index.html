@@ -67,10 +67,11 @@
       line-height: 1.7;
     }
 
+    /* ✅ FIX 1: tighter grid */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
+      gap: 14px;
     }
 
     .card {
@@ -89,7 +90,7 @@
 
     .card img {
       width: 100%;
-      aspect-ratio: 1 / 1;
+      height: 200px;
       object-fit: cover;
       transition: 0.5s ease;
     }
@@ -98,8 +99,9 @@
       transform: scale(1.05);
     }
 
+    /* ✅ FIX 2: smaller padding */
     .content {
-      padding: 20px;
+      padding: 12px;
     }
 
     .era {
@@ -117,20 +119,22 @@
       gap: 14px;
     }
 
+    /* ✅ smaller titles */
     .title {
-      font-size: 1.5rem;
+      font-size: 1.1rem;
       font-weight: 600;
     }
 
+    /* ✅ smaller button */
     button {
-      width: 50px;
-      height: 50px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       border: none;
       background: white;
       color: black;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 0.8rem;
       transition: 0.25s ease;
     }
 
