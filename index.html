@@ -67,7 +67,7 @@
       line-height: 1.7;
     }
 
-    /* ✅ FIX 1: tighter grid */
+    /* layout */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -88,18 +88,14 @@
       border-color: rgba(255,255,255,0.2);
     }
 
+    /* ✅ FIXED: perfect square album art */
     .card img {
       width: 100%;
-      height: 200px;
+      aspect-ratio: 1 / 1;
       object-fit: cover;
-      transition: 0.5s ease;
+      display: block;
     }
 
-    .card:hover img {
-      transform: scale(1.05);
-    }
-
-    /* ✅ FIX 2: smaller padding */
     .content {
       padding: 12px;
     }
@@ -119,13 +115,11 @@
       gap: 14px;
     }
 
-    /* ✅ smaller titles */
     .title {
       font-size: 1.1rem;
       font-weight: 600;
     }
 
-    /* ✅ smaller button */
     button {
       width: 38px;
       height: 38px;
