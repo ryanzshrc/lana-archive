@@ -10,446 +10,148 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #050505;
-      color: white;
-      overflow-x: hidden;
+      background:#050505;
+      color:white;
+      overflow-x:hidden;
+      padding-bottom:80px;
     }
 
     .background {
-      position: fixed;
-      inset: 0;
-      background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1600&auto=format&fit=crop');
-      background-size: cover;
-      background-position: center;
-      filter: blur(8px);
-      opacity: 0.15;
-      transform: scale(1.1);
-      z-index: -1;
+      position:fixed;
+      inset:0;
+      background-image:url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1600&auto=format&fit=crop');
+      background-size:cover;
+      background-position:center;
+      filter:blur(8px);
+      opacity:0.15;
+      transform:scale(1.1);
+      z-index:-1;
     }
 
     .container {
-      width: min(1200px, 92%);
-      margin: auto;
-      padding: 40px 0;
+      width:min(1200px, 92%);
+      margin:auto;
+      padding:40px 0;
     }
 
-    .header {
-      margin-bottom: 40px;
-    }
+    .header { margin-bottom:40px; }
 
     .subtitle {
-      text-transform: uppercase;
-      letter-spacing: 0.4em;
-      color: #999;
-      font-size: 0.75rem;
-      margin-bottom: 16px;
+      text-transform:uppercase;
+      letter-spacing:0.4em;
+      color:#999;
+      font-size:0.75rem;
+      margin-bottom:16px;
     }
 
     h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-style: italic;
-      line-height: 0.9;
-      margin-bottom: 20px;
+      font-family:'Cormorant Garamond', serif;
+      font-size:clamp(3rem, 8vw, 6rem);
+      font-style:italic;
+      line-height:0.9;
+      margin-bottom:20px;
     }
 
-    .description {
-      max-width: 600px;
-      color: #aaa;
-      line-height: 1.7;
-    }
+    .description { max-width:600px; color:#aaa; line-height:1.7; }
 
     .grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:10px;
     }
 
-    @media (max-width: 1100px) {
-      .grid { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    @media (max-width: 800px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 500px) {
-      .grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width:1100px){ .grid{grid-template-columns:repeat(3,1fr);} }
+    @media (max-width:800px){ .grid{grid-template-columns:repeat(2,1fr);} }
+    @media (max-width:500px){ .grid{grid-template-columns:1fr;} }
 
     .card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      overflow: hidden;
-      backdrop-filter: blur(20px);
-      transition: 0.25s ease;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:18px;
+      overflow:hidden;
+      backdrop-filter:blur(20px);
+      transition:0.25s ease;
     }
 
     .card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(255,255,255,0.2);
+      transform:translateY(-4px);
+      border-color:rgba(255,255,255,0.2);
     }
 
     .card img {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      display: block;
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:cover;
+      display:block;
     }
 
-    .content {
-      padding: 10px;
-    }
+    .content { padding:10px; }
 
     .era {
-      text-transform: uppercase;
-      letter-spacing: 0.25em;
-      color: #888;
-      font-size: 0.65rem;
-      margin-bottom: 6px;
+      text-transform:uppercase;
+      letter-spacing:0.25em;
+      color:#888;
+      font-size:0.65rem;
+      margin-bottom:6px;
     }
 
     .bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
     }
 
-    .title {
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
+    .title { font-size:0.95rem; font-weight:600; }
 
     button {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: none;
-      background: white;
-      color: black;
-      cursor: pointer;
-      font-size: 0.75rem;
-      transition: 0.2s ease;
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      border:none;
+      background:white;
+      color:black;
+      cursor:pointer;
     }
 
-    button:hover {
-      transform: scale(1.08);
-    }
-
-    /* 🔥 PROGRESS BAR */
-    .progress {
-      width: 100%;
-      height: 3px;
-      background: rgba(255,255,255,0.15);
-      margin-top: 8px;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .bar {
-      height: 100%;
-      width: 0%;
-      background: white;
-      transition: width 0.1s linear;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="background"></div>
-
-  <div class="container">
-    <div class="header">
-      <div class="subtitle">Unreleased Archive</div>
-      <h1>Lana Archive</h1>
-      <p class="description">Lana Del Rey unreleased music</p>
-    </div>
-
-    <div class="grid">
-
-      <!-- TRACK 1 -->
-      <div class="card">
-        <img src="art/yourgirl.jpg">
-
-        <div class="content">
-          <div class="era">Ultraviolence Era</div>
-
-          <div class="bottom">
-            <div class="title">Your Girl</div>
-            <button onclick="toggleAudio('song1', this)">▶</button>
-          </div>
-
-          <div class="progress"><div class="bar" id="bar-song1"></div></div>
-          <audio id="song1" src="music/yourgirl.mp3"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 2 -->
-      <div class="card">
-        <img src="art/dietmountaindewdemo.png">
-
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-
-          <div class="bottom">
-            <div class="title">Diet Mountain Dew (Demo)</div>
-            <button onclick="toggleAudio('song2', this)">▶</button>
-          </div>
-
-          <div class="progress"><div class="bar" id="bar-song2"></div></div>
-          <audio id="song2" src="music/dietmountaindewdemo.mp3"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 3 -->
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1501612780327-45045538702b?q=80&w=1200&auto=format&fit=crop">
-
-        <div class="content">
-          <div class="era">Unreleased</div>
-
-          <div class="bottom">
-            <div class="title">Queen of Disaster</div>
-            <button onclick="toggleAudio('song3', this)">▶</button>
-          </div>
-
-          <div class="progress"><div class="bar" id="bar-song3"></div></div>
-          <audio id="song3" src="music/queenofdisaster.mp3"></audio>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <script>
-    function toggleAudio(id, button) {
-      const audio = document.getElementById(id);
-
-      document.querySelectorAll('audio').forEach(a => {
-        if (a !== audio) {
-          a.pause();
-          a.currentTime = 0;
-
-          const btn = document.querySelector(`button[onclick*="${a.id}"]`);
-          if (btn) btn.innerText = "▶";
-
-          const bar = document.getElementById("bar-" + a.id);
-          if (bar) bar.style.width = "0%";
-        }
-      });
-
-      if (audio.paused) {
-        audio.play();
-        button.innerText = "❚❚";
-        updateProgress(audio);
-      } else {
-        audio.pause();
-        button.innerText = "▶";
-      }
-    }
-
-    function updateProgress(audio) {
-      const bar = document.getElementById("bar-" + audio.id);<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lana Archive</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #050505;
-      color: white;
-      overflow-x: hidden;
-      padding-bottom: 80px;
-    }
-
-    .background {
-      position: fixed;
-      inset: 0;
-      background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1600&auto=format&fit=crop');
-      background-size: cover;
-      background-position: center;
-      filter: blur(8px);
-      opacity: 0.15;
-      transform: scale(1.1);
-      z-index: -1;
-    }
-
-    .container {
-      width: min(1200px, 92%);
-      margin: auto;
-      padding: 40px 0;
-    }
-
-    .header {
-      margin-bottom: 40px;
-    }
-
-    .subtitle {
-      text-transform: uppercase;
-      letter-spacing: 0.4em;
-      color: #999;
-      font-size: 0.75rem;
-      margin-bottom: 16px;
-    }
-
-    h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-style: italic;
-      line-height: 0.9;
-      margin-bottom: 20px;
-    }
-
-    .description {
-      max-width: 600px;
-      color: #aaa;
-      line-height: 1.7;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-
-    @media (max-width: 1100px) {
-      .grid { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    @media (max-width: 800px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 500px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-
-    .card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
-      overflow: hidden;
-      backdrop-filter: blur(20px);
-      transition: 0.25s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(255,255,255,0.2);
-    }
-
-    .card img {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      display: block;
-    }
-
-    .content {
-      padding: 10px;
-    }
-
-    .era {
-      text-transform: uppercase;
-      letter-spacing: 0.25em;
-      color: #888;
-      font-size: 0.65rem;
-      margin-bottom: 6px;
-    }
-
-    .bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .title {
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    button {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: none;
-      background: white;
-      color: black;
-      cursor: pointer;
-      font-size: 0.75rem;
-      transition: 0.2s ease;
-    }
-
-    button:hover {
-      transform: scale(1.08);
-    }
-
-    /* ===== PLAYER ===== */
+    /* PLAYER */
     .player {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 64px;
-      background: rgba(10,10,10,0.95);
-      backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 0 16px;
-      z-index: 999;
+      position:fixed;
+      bottom:0;
+      left:0;
+      right:0;
+      height:64px;
+      background:rgba(10,10,10,0.95);
+      backdrop-filter:blur(20px);
+      border-top:1px solid rgba(255,255,255,0.08);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:0 16px;
     }
 
     .player-title {
-      flex: 1;
-      font-size: 0.85rem;
-      color: #ccc;
-    }
-
-    .player button {
-      width: 34px;
-      height: 34px;
+      flex:1;
+      font-size:0.85rem;
+      color:#ccc;
     }
 
     .seek {
-      flex: 2;
-      height: 4px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 2px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
+      flex:2;
+      height:4px;
+      background:rgba(255,255,255,0.15);
+      border-radius:2px;
+      cursor:pointer;
+      position:relative;
     }
 
     .seek-bar {
-      height: 100%;
-      width: 0%;
-      background: white;
+      height:100%;
+      width:0%;
+      background:white;
     }
   </style>
 </head>
@@ -469,7 +171,7 @@
       <div class="card">
         <img src="art/yourgirl.jpg">
         <div class="content">
-          <div class="era">Ultraviolence Era</div>
+          <div class="era">Ultraviolence</div>
           <div class="bottom">
             <div class="title">Your Girl</div>
             <button onclick="playTrack('song1','Your Girl')">▶</button>
@@ -479,14 +181,14 @@
       </div>
 
       <div class="card">
-        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1200&auto=format&fit=crop">
+        <img src="art/dietmountaindewdemo.png">
         <div class="content">
-          <div class="era">Paradise Era</div>
+          <div class="era">Born To Die</div>
           <div class="bottom">
-            <div class="title">Serial Killer</div>
-            <button onclick="playTrack('song2','Serial Killer')">▶</button>
+            <div class="title">Diet Mountain Dew</div>
+            <button onclick="playTrack('song2','Diet Mountain Dew')">▶</button>
           </div>
-          <audio id="song2" src="music/serialkiller.mp3"></audio>
+          <audio id="song2" src="music/dietmountaindewdemo.mp3"></audio>
         </div>
       </div>
 
@@ -507,111 +209,75 @@
 
   <!-- PLAYER -->
   <div class="player">
-    <div class="player-title" id="player-title">Nothing playing</div>
+    <div class="player-title" id="title">Nothing playing</div>
 
-    <button id="play-btn">▶</button>
-    <button id="loop-btn" style="opacity:0.4;">↻</button>
+    <button id="play">▶</button>
 
     <div class="seek" id="seek">
-      <div class="seek-bar" id="seek-bar"></div>
+      <div class="seek-bar" id="bar"></div>
     </div>
   </div>
 
   <script>
-    let currentAudio = null;
-    let isLooping = false;
+    let current = null;
 
-    const playBtn = document.getElementById("play-btn");
-    const loopBtn = document.getElementById("loop-btn");
-    const title = document.getElementById("player-title");
+    const playBtn = document.getElementById("play");
+    const title = document.getElementById("title");
     const seek = document.getElementById("seek");
-    const seekBar = document.getElementById("seek-bar");
+    const bar = document.getElementById("bar");
 
     function playTrack(id, name) {
       const audio = document.getElementById(id);
 
-      if (currentAudio && currentAudio !== audio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
+      if (current && current !== audio) {
+        current.pause();
+        current.currentTime = 0;
       }
 
-      currentAudio = audio;
-      title.innerText = name;
+      current = audio;
+      title.textContent = name;
 
-      audio.loop = isLooping;
       audio.play();
+      playBtn.textContent = "❚❚";
 
-      playBtn.innerText = "❚❚";
-
-      requestAnimationFrame(update);
+      update();
     }
 
     playBtn.onclick = () => {
-      if (!currentAudio) return;
+      if (!current) return;
 
-      if (currentAudio.paused) {
-        currentAudio.play();
-        playBtn.innerText = "❚❚";
-        requestAnimationFrame(update);
+      if (current.paused) {
+        current.play();
+        playBtn.textContent = "❚❚";
+        update();
       } else {
-        currentAudio.pause();
-        playBtn.innerText = "▶";
+        current.pause();
+        playBtn.textContent = "▶";
       }
-    };
-
-    loopBtn.onclick = () => {
-      isLooping = !isLooping;
-      loopBtn.style.opacity = isLooping ? "1" : "0.4";
-      if (currentAudio) currentAudio.loop = isLooping;
     };
 
     function update() {
-      if (!currentAudio) return;
+      if (!current) return;
 
-      const percent = (currentAudio.currentTime / currentAudio.duration) * 100;
-      seekBar.style.width = percent + "%";
+      if (current.duration) {
+        bar.style.width = (current.currentTime / current.duration) * 100 + "%";
+      }
 
-      if (!currentAudio.paused) {
+      if (!current.paused) {
         requestAnimationFrame(update);
-      } else {
-        playBtn.innerText = "▶";
       }
     }
 
-    seek.addEventListener("click", (e) => {
-      if (!currentAudio) return;
+    seek.onclick = (e) => {
+      if (!current) return;
 
       const rect = seek.getBoundingClientRect();
       const x = e.clientX - rect.left;
-      const percent = x / rect.width;
+      const pct = x / rect.width;
 
-      currentAudio.currentTime = percent * currentAudio.duration;
-    });
-
-    document.querySelectorAll("audio").forEach(audio => {
-      audio.addEventListener("ended", () => {
-        playBtn.innerText = "▶";
-        seekBar.style.width = "0%";
-      });
-    });
+      current.currentTime = pct * current.duration;
+    };
   </script>
-</body>
-</html>
 
-      function step() {
-        if (!audio.paused) {
-          const percent = (audio.currentTime / audio.duration) * 100;
-          bar.style.width = percent + "%";
-          requestAnimationFrame(step);
-        }
-      }
-
-      audio.addEventListener("loadedmetadata", step);
-      audio.addEventListener("timeupdate", () => {
-        const percent = (audio.currentTime / audio.duration) * 100;
-        bar.style.width = percent + "%";
-      });
-    }
-  </script>
 </body>
 </html>
