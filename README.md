@@ -1,7 +1,7 @@
 <h1 align="center">Lana Del Rey Archive</h1>
 
 <p align="center">
-  <img src="assets/lana-banner.jpg" width="100%">
+  <img src="assets/lana-banner.png" width="100%">
 </p>
 
 <p align="center">
