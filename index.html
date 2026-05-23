@@ -410,125 +410,358 @@
   </div>
 
   <script>
-    let currentAudio = null;
-    let currentButton = null;
+  let currentAudio = null;
+  let currentButton = null;
+  let isLooping = false;
 
-    const mainPlay = document.getElementById("main-play");
-    const seek = document.getElementById("seek");
-    const volume = document.getElementById("volume");
-    const playerSong = document.getElementById("player-song");
-    const playerTime = document.getElementById("player-time");
+  const tracks = [
+    "song1",
+    "song2",
+    "song3",
+    "song4",
+    "song5",
+    "song6",
+    "song7"
+  ];
 
-    function toggleAudio(id, button) {
-      const audio = document.getElementById(id);
+  // ===== PLAYER =====
+  const player = document.createElement("div");
 
-      document.querySelectorAll(".card button").forEach(btn => {
-        btn.innerText = "▶";
-      });
+  player.innerHTML = `
+    <div class="music-player">
 
-      if (currentAudio && currentAudio !== audio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-      }
+      <div class="player-info">
+        <div id="player-song">Nothing Playing</div>
+        <div id="player-time">0:00 / 0:00</div>
+      </div>
 
-      currentAudio = audio;
-      currentButton = button;
+      <div class="player-center">
+        <button id="main-play">▶</button>
 
-      const title =
-        button.parentElement.querySelector(".title").innerText;
+        <button id="loop-btn" title="Loop">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M17 17H6V14L2 18L6 22V19H19C20.1 19 21 18.1 21 17V13H19V17H17Z"/>
+            <path d="M7 7H18V10L22 6L18 2V5H5C3.9 5 3 5.9 3 7V11H5V7H7Z"/>
+          </svg>
+        </button>
 
-      playerSong.innerText = title;
+        <input
+          type="range"
+          id="seek"
+          min="0"
+          max="100"
+          value="0"
+        />
+      </div>
 
-      if (audio.paused) {
-        audio.play();
-        button.innerText = "❚❚";
-        mainPlay.innerText = "❚❚";
-      } else {
-        audio.pause();
-        button.innerText = "▶";
-        mainPlay.innerText = "▶";
-      }
+      <div class="player-right">
 
-      audio.volume = volume.value;
+        <svg class="volume-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M5 9V15H9L14 20V4L9 9H5Z"/>
+          <path d="M18 9C19.2 10.2 19.2 13.8 18 15"/>
+          <path d="M20.5 6.5C23.5 9.5 23.5 14.5 20.5 17.5"/>
+        </svg>
 
-      audio.removeEventListener("timeupdate", updatePlayer);
-      audio.addEventListener("timeupdate", updatePlayer);
+        <input
+          type="range"
+          id="volume"
+          min="0"
+          max="1"
+          step="0.01"
+          value="1"
+        />
+      </div>
 
-      audio.removeEventListener("ended", resetPlayer);
-      audio.addEventListener("ended", resetPlayer);
+    </div>
+  `;
+
+  document.body.appendChild(player);
+
+  // ===== STYLE =====
+  const style = document.createElement("style");
+
+  style.innerHTML = `
+    body {
+      padding-bottom: 90px;
     }
 
-    function updatePlayer() {
-      if (!currentAudio) return;
+    .music-player {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 78px;
 
-      const progress =
-        (currentAudio.currentTime / currentAudio.duration) * 100;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(20px);
 
-      seek.value = progress || 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
 
-      playerTime.innerText =
-        formatTime(currentAudio.currentTime) +
-        " / " +
-        formatTime(currentAudio.duration);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 20px;
+      z-index: 9999;
     }
 
-    seek.addEventListener("input", () => {
-      if (!currentAudio) return;
+    .player-info {
+      width: 220px;
+    }
 
-      currentAudio.currentTime =
-        (seek.value / 100) * currentAudio.duration;
-    });
+    #player-song {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
 
-    volume.addEventListener("input", () => {
-      if (!currentAudio) return;
+    #player-time {
+      color: #888;
+      font-size: 0.75rem;
+    }
 
-      currentAudio.volume = volume.value;
-    });
+    .player-center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 700px;
+      margin: 0 20px;
+    }
 
-    mainPlay.addEventListener("click", () => {
-      if (!currentAudio) return;
+    .player-right {
+      width: 140px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-      if (currentAudio.paused) {
-        currentAudio.play();
+    #main-play,
+    #loop-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: none;
+      background: white;
+      color: black;
+      cursor: pointer;
+      flex-shrink: 0;
 
-        mainPlay.innerText = "❚❚";
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        if (currentButton) {
-          currentButton.innerText = "❚❚";
-        }
+    #loop-btn {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
 
-      } else {
-        currentAudio.pause();
+    #loop-btn.active {
+      background: white;
+      color: black;
+    }
 
-        mainPlay.innerText = "▶";
+    #loop-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
 
-        if (currentButton) {
-          currentButton.innerText = "▶";
-        }
+    .volume-icon {
+      width: 20px;
+      height: 20px;
+      stroke: white;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    #seek,
+    #volume {
+      width: 100%;
+      cursor: pointer;
+    }
+
+    @media (max-width: 700px) {
+      .music-player {
+        flex-direction: column;
+        height: auto;
+        padding: 12px;
+        gap: 12px;
       }
+
+      .player-info,
+      .player-right,
+      .player-center {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+
+  // ===== ELEMENTS =====
+  const mainPlay = document.getElementById("main-play");
+  const loopBtn = document.getElementById("loop-btn");
+  const seek = document.getElementById("seek");
+  const volume = document.getElementById("volume");
+
+  const playerSong = document.getElementById("player-song");
+  const playerTime = document.getElementById("player-time");
+
+  // ===== AUDIO =====
+  function toggleAudio(id, button) {
+    const audio = document.getElementById(id);
+
+    document.querySelectorAll(".card button").forEach(btn => {
+      btn.innerText = "▶";
     });
 
-    function resetPlayer() {
+    if (currentAudio && currentAudio !== audio) {
+      currentAudio.pause();
+    }
+
+    currentAudio = audio;
+    currentButton = button;
+
+    const title =
+      button.parentElement.querySelector(".title").innerText;
+
+    playerSong.innerText = title;
+
+    currentAudio.loop = isLooping;
+
+    if (audio.paused) {
+      audio.play();
+
+      button.innerText = "❚❚";
+      mainPlay.innerText = "❚❚";
+    } else {
+      audio.pause();
+
+      button.innerText = "▶";
+      mainPlay.innerText = "▶";
+    }
+
+    audio.volume = volume.value;
+
+    audio.addEventListener("timeupdate", updatePlayer);
+  }
+
+  // ===== UPDATE =====
+  function updatePlayer() {
+    if (!currentAudio) return;
+
+    const progress =
+      (currentAudio.currentTime / currentAudio.duration) * 100;
+
+    seek.value = progress || 0;
+
+    playerTime.innerText =
+      formatTime(currentAudio.currentTime) +
+      " / " +
+      formatTime(currentAudio.duration);
+  }
+
+  // ===== MAIN PLAY =====
+  mainPlay.addEventListener("click", () => {
+    if (!currentAudio) return;
+
+    if (currentAudio.paused) {
+      currentAudio.play();
+
+      mainPlay.innerText = "❚❚";
+
+      if (currentButton)
+        currentButton.innerText = "❚❚";
+    } else {
+      currentAudio.pause();
+
       mainPlay.innerText = "▶";
 
-      if (currentButton) {
+      if (currentButton)
         currentButton.innerText = "▶";
+    }
+  });
+
+  // ===== SEEK =====
+  seek.addEventListener("input", () => {
+    if (!currentAudio) return;
+
+    currentAudio.currentTime =
+      (seek.value / 100) * currentAudio.duration;
+  });
+
+  // ===== VOLUME =====
+  volume.addEventListener("input", () => {
+    if (!currentAudio) return;
+
+    currentAudio.volume = volume.value;
+  });
+
+  // ===== LOOP =====
+  loopBtn.addEventListener("click", () => {
+    isLooping = !isLooping;
+
+    loopBtn.classList.toggle("active");
+
+    if (currentAudio) {
+      currentAudio.loop = isLooping;
+    }
+  });
+
+  // ===== NEXT SONG =====
+  document.querySelectorAll("audio").forEach(audio => {
+    audio.addEventListener("ended", () => {
+
+      if (isLooping) return;
+
+      const currentIndex = tracks.indexOf(audio.id);
+      const nextIndex = currentIndex + 1;
+
+      if (nextIndex < tracks.length) {
+        const nextId = tracks[nextIndex];
+
+        const nextButton = document.querySelector(
+          \`button[onclick*="\${nextId}"]\`
+        );
+
+        toggleAudio(nextId, nextButton);
+      } else {
+        resetPlayer();
       }
+    });
+  });
 
-      seek.value = 0;
-    }
+  // ===== RESET =====
+  function resetPlayer() {
+    mainPlay.innerText = "▶";
 
-    function formatTime(seconds) {
-      if (isNaN(seconds)) return "0:00";
+    if (currentButton)
+      currentButton.innerText = "▶";
 
-      const mins = Math.floor(seconds / 60);
+    seek.value = 0;
 
-      const secs = Math.floor(seconds % 60)
-        .toString()
-        .padStart(2, "0");
+    playerSong.innerText = "Nothing Playing";
+    playerTime.innerText = "0:00 / 0:00";
+  }
 
-      return mins + ":" + secs;
-    }
-  </script>
+  // ===== TIME =====
+  function formatTime(seconds) {
+    if (isNaN(seconds)) return "0:00";
+
+    const mins = Math.floor(seconds / 60);
+
+    const secs = Math.floor(seconds % 60)
+      .toString()
+      .padStart(2, "0");
+
+    return mins + ":" + secs;
+  }
+</script>
+
 </body>
 </html>
