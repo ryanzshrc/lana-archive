@@ -1,348 +1,260 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lana Archive</title>
+<script>
+  let currentAudio = null;
+  let currentButton = null;
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  // ===== CREATE PLAYER =====
+  const player = document.createElement("div");
+  player.innerHTML = `
+    <div class="music-player">
+      <div class="player-info">
+        <div id="player-song">Nothing Playing</div>
+        <div id="player-time">0:00 / 0:00</div>
+      </div>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+      <div class="player-center">
+        <button id="main-play">▶</button>
 
+        <input
+          type="range"
+          id="seek"
+          min="0"
+          max="100"
+          value="0"
+        />
+      </div>
+
+      <div class="player-right">
+        <span>🔊</span>
+
+        <input
+          type="range"
+          id="volume"
+          min="0"
+          max="1"
+          step="0.01"
+          value="1"
+        />
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(player);
+
+  // ===== PLAYER STYLE =====
+  const style = document.createElement("style");
+
+  style.innerHTML = `
     body {
-      font-family: 'Inter', sans-serif;
-      background: #050505;
-      color: white;
-      overflow-x: hidden;
+      padding-bottom: 90px;
     }
 
-    .background {
+    .music-player {
       position: fixed;
-      inset: 0;
-      background-image: url('assets/background.jpg');
-      background-size: cover;
-      background-position: center;
-      filter: blur(8px);
-      opacity: 0.15;
-      transform: scale(1.1);
-      z-index: -1;
-    }
-
-    .container {
-      width: min(1200px, 92%);
-      margin: auto;
-      padding: 40px 0;
-    }
-
-    .header {
-      margin-bottom: 40px;
-    }
-
-    .subtitle {
-      text-transform: uppercase;
-      letter-spacing: 0.4em;
-      color: #999;
-      font-size: 0.75rem;
-      margin-bottom: 16px;
-    }
-
-    h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-style: italic;
-      line-height: 0.9;
-      margin-bottom: 20px;
-    }
-
-    .description {
-      max-width: 600px;
-      color: #aaa;
-      line-height: 1.7;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-
-    @media (max-width: 1100px) {
-      .grid { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    @media (max-width: 800px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 500px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-
-    .card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      overflow: hidden;
-      backdrop-filter: blur(20px);
-      transition: 0.25s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(255,255,255,0.2);
-    }
-
-    .card img {
+      bottom: 0;
+      left: 0;
       width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      display: block;
-    }
+      height: 78px;
 
-    .content {
-      padding: 10px;
-    }
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(20px);
 
-    .era {
-      text-transform: uppercase;
-      letter-spacing: 0.25em;
-      color: #888;
-      font-size: 0.65rem;
-      margin-bottom: 6px;
-    }
+      border-top: 1px solid rgba(255,255,255,0.08);
 
-    .bottom {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+
+      padding: 0 20px;
+      z-index: 9999;
     }
 
-    .title {
-      font-size: 0.95rem;
+    .player-info {
+      width: 220px;
+    }
+
+    #player-song {
       font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
     }
 
-    button {
-      width: 34px;
-      height: 34px;
+    #player-time {
+      color: #888;
+      font-size: 0.75rem;
+    }
+
+    .player-center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      max-width: 700px;
+      margin: 0 20px;
+    }
+
+    #main-play {
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       border: none;
       background: white;
       color: black;
       cursor: pointer;
-      font-size: 0.75rem;
-      transition: 0.2s ease;
+      font-size: 0.9rem;
+      flex-shrink: 0;
     }
 
-    button:hover {
-      transform: scale(1.08);
-    }
-
-    /* 🔥 PROGRESS BAR */
-    .progress {
+    #seek {
       width: 100%;
-      height: 3px;
-      background: rgba(255,255,255,0.15);
-      margin-top: 8px;
-      border-radius: 2px;
-      overflow: hidden;
+      cursor: pointer;
     }
 
-    .bar {
-      height: 100%;
-      width: 0%;
-      background: white;
-      transition: width 0.1s linear;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="background"></div>
-
-  <div class="container">
-    <div class="header">
-      <div class="subtitle">Unreleased Archive</div>
-      <h1>Lana Archive</h1>
-      <p class="description">Lana Del Rey unreleased music</p>
-    </div>
-
-    <div class="grid">
-
-      <!-- TRACK 1 -->
-      <div class="card">
-        <img src="art/yourgirl.jpg">
-
-        <div class="content">
-          <div class="era">Ultraviolence Era</div>
-
-          <div class="bottom">
-            <div class="title">Your Girl</div>
-            <button onclick="toggleAudio('song1', this)">▶</button>
-          </div>
-
-          <div class="progress"><div class="bar" id="bar-song1"></div></div>
-          <audio id="song1" src="music/yourgirl.mp3"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 2 -->
-      <div class="card">
-        <img src="art/dietmountaindewdemo.jpg">
-
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-
-          <div class="bottom">
-            <div class="title">Diet Mountain Dew (Demo)</div>
-            <button onclick="toggleAudio('song2', this)">▶</button>
-          </div>
-
-          <div class="progress"><div class="bar" id="bar-song2"></div></div>
-          <audio id="song2" src="music/dietmountaindewdemo.mp3"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 3 -->
-      <div class="card">
-        <img src="art/nationalanthemdemo.jpg">
-
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-
-          <div class="bottom">
-            <div class="title">National Anthem (Demo)</div>
-            <button onclick="toggleAudio('song3', this)">▶</button>
-          </div>
-
-          <div class="progress"><div class="bar" id="bar-song3"></div></div>
-          <audio id="song3" src="music/nationalanthemdemo.mp3"></audio>
-        </div>
-      </div>
-      
-      <!-- TRACK 4 -->
-      <div class="card">
-        <img src="art/velvetcrowbar.jpg">
-
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-
-          <div class="bottom">
-            <div class="title">Velvet Crowbar</div>
-            <button onclick="toggleAudio('song4', this)">▶</button>
-          </div>
-
-          <div class="progress"><div class="bar" id="bar-song4"></div></div>
-          <audio id="song4" src="music/velvetcrowbar.mp3"></audio>
-        </div>
-      </div>
-      
-      <!-- TRACK 5 -->
-      <div class="card">
-        <img src="art/finechina.jpg">
-
-        <div class="content">
-          <div class="era">Ultraviolence Era</div>
-
-          <div class="bottom">
-            <div class="title">Fine China</div>
-            <button onclick="toggleAudio('song5', this)">▶</button>
-          </div>
-
-          <div class="progress"><div class="bar" id="bar-song5"></div></div>
-          <audio id="song5" src="music/finechina.m4a"></audio>
-        </div>
-      </div>
-      
-      <!-- TRACK 6 -->
-      <div class="card">
-        <img src="art/serialkiller.jpg">
-
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-
-          <div class="bottom">
-            <div class="title">Serial Killer</div>
-            <button onclick="toggleAudio('song6', this)">▶</button>
-          </div>
-
-          <div class="progress"><div class="bar" id="bar-song6"></div></div>
-          <audio id="song6" src="music/serialkiller.m4a"></audio>
-        </div>
-      </div>
-      
-      <!-- TRACK 7 -->
-      <div class="card">
-        <img src="art/queenofdisaster.jpg">
-
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-
-          <div class="bottom">
-            <div class="title">Queen Of Disaster</div>
-            <button onclick="toggleAudio('song7', this)">▶</button>
-          </div>
-
-          <div class="progress"><div class="bar" id="bar-song7"></div></div>
-          <audio id="song7" src="music/queenofdisaster.m4a"></audio>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <script>
-    function toggleAudio(id, button) {
-      const audio = document.getElementById(id);
-
-      document.querySelectorAll('audio').forEach(a => {
-        if (a !== audio) {
-          a.pause();
-          a.currentTime = 0;
-
-          const btn = document.querySelector(`button[onclick*="${a.id}"]`);
-          if (btn) btn.innerText = "▶";
-
-          const bar = document.getElementById("bar-" + a.id);
-          if (bar) bar.style.width = "0%";
-        }
-      });
-
-      if (audio.paused) {
-        audio.play();
-        button.innerText = "❚❚";
-        updateProgress(audio);
-      } else {
-        audio.pause();
-        button.innerText = "▶";
-      }
+    .player-right {
+      width: 140px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    function updateProgress(audio) {
-      const bar = document.getElementById("bar-" + audio.id);
+    #volume {
+      width: 100%;
+      cursor: pointer;
+    }
 
-      function step() {
-        if (!audio.paused) {
-          const percent = (audio.currentTime / audio.duration) * 100;
-          bar.style.width = percent + "%";
-          requestAnimationFrame(step);
-        }
+    @media (max-width: 700px) {
+      .music-player {
+        flex-direction: column;
+        height: auto;
+        padding: 12px;
+        gap: 12px;
       }
 
-      audio.addEventListener("loadedmetadata", step);
-      audio.addEventListener("timeupdate", () => {
-        const percent = (audio.currentTime / audio.duration) * 100;
-        bar.style.width = percent + "%";
-      });
+      .player-info,
+      .player-right,
+      .player-center {
+        width: 100%;
+        max-width: 100%;
+      }
     }
-  </script>
-</body>
-</html>
+  `;
+
+  document.head.appendChild(style);
+
+  // ===== ELEMENTS =====
+  const mainPlay = document.getElementById("main-play");
+  const seek = document.getElementById("seek");
+  const volume = document.getElementById("volume");
+  const playerSong = document.getElementById("player-song");
+  const playerTime = document.getElementById("player-time");
+
+  // ===== AUDIO FUNCTION =====
+  function toggleAudio(id, button) {
+    const audio = document.getElementById(id);
+
+    // reset all buttons
+    document.querySelectorAll(".card button").forEach(btn => {
+      btn.innerText = "▶";
+    });
+
+    // pause previous
+    if (currentAudio && currentAudio !== audio) {
+      currentAudio.pause();
+    }
+
+    currentAudio = audio;
+    currentButton = button;
+
+    const title =
+      button.parentElement.querySelector(".title").innerText;
+
+    playerSong.innerText = title;
+
+    if (audio.paused) {
+      audio.play();
+      button.innerText = "❚❚";
+      mainPlay.innerText = "❚❚";
+    } else {
+      audio.pause();
+      button.innerText = "▶";
+      mainPlay.innerText = "▶";
+    }
+
+    audio.volume = volume.value;
+
+    audio.addEventListener("timeupdate", updatePlayer);
+    audio.addEventListener("ended", resetPlayer);
+  }
+
+  // ===== UPDATE PLAYER =====
+  function updatePlayer() {
+    if (!currentAudio) return;
+
+    const progress =
+      (currentAudio.currentTime / currentAudio.duration) * 100;
+
+    seek.value = progress || 0;
+
+    playerTime.innerText =
+      formatTime(currentAudio.currentTime) +
+      " / " +
+      formatTime(currentAudio.duration);
+  }
+
+  // ===== SEEK =====
+  seek.addEventListener("input", () => {
+    if (!currentAudio) return;
+
+    currentAudio.currentTime =
+      (seek.value / 100) * currentAudio.duration;
+  });
+
+  // ===== VOLUME =====
+  volume.addEventListener("input", () => {
+    if (!currentAudio) return;
+
+    currentAudio.volume = volume.value;
+  });
+
+  // ===== MAIN PLAY BUTTON =====
+  mainPlay.addEventListener("click", () => {
+    if (!currentAudio) return;
+
+    if (currentAudio.paused) {
+      currentAudio.play();
+
+      mainPlay.innerText = "❚❚";
+
+      if (currentButton)
+        currentButton.innerText = "❚❚";
+    } else {
+      currentAudio.pause();
+
+      mainPlay.innerText = "▶";
+
+      if (currentButton)
+        currentButton.innerText = "▶";
+    }
+  });
+
+  // ===== RESET =====
+  function resetPlayer() {
+    mainPlay.innerText = "▶";
+
+    if (currentButton)
+      currentButton.innerText = "▶";
+
+    seek.value = 0;
+  }
+
+  // ===== FORMAT TIME =====
+  function formatTime(seconds) {
+    if (isNaN(seconds)) return "0:00";
+
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60)
+      .toString()
+      .padStart(2, "0");
+
+    return mins + ":" + secs;
+  }
+</script>
