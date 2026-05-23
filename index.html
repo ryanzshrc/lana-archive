@@ -56,14 +56,6 @@
       margin-bottom: 16px;
     }
 
-    .credit-top {
-      font-size: 0.7rem;
-      color: #3a3a3a;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-
     h1 {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(3rem, 8vw, 6rem);
@@ -77,7 +69,7 @@
       position: relative;
       width: 260px;
       flex-shrink: 0;
-      margin-bottom: 6px; /* align with h1 baseline */
+      margin-bottom: 6px;
     }
 
     @media (max-width: 600px) {
@@ -398,123 +390,13 @@
     </div>
 
     <div class="no-results" id="no-results">No songs found.</div>
-    <div class="grid" id="grid">
-
-      <!-- TRACK 1 -->
-      <div class="card" data-title="Your Girl" data-era="Ultraviolence Era">
-        <img src="art/yourgirl.jpg" alt="Your Girl">
-        <div class="content">
-          <div class="era">Ultraviolence Era</div>
-          <div class="bottom">
-            <div class="title">Your Girl</div>
-            <button class="play-btn" onclick="toggleAudio('song1', this)">▶</button>
-          </div>
-          <audio id="song1" src="music/yourgirl.mp3"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 2 -->
-      <div class="card" data-title="Diet Mountain Dew Demo" data-era="Born To Die Era">
-        <img src="art/dietmountaindewdemo.jpg" alt="Diet Mountain Dew (Demo)">
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-          <div class="bottom">
-            <div class="title">Diet Mountain Dew (Demo)</div>
-            <button class="play-btn" onclick="toggleAudio('song2', this)">▶</button>
-          </div>
-          <audio id="song2" src="music/dietmountaindewdemo.mp3"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 3 -->
-      <div class="card" data-title="National Anthem Demo" data-era="Born To Die Era">
-        <img src="art/nationalanthemdemo.jpg" alt="National Anthem (Demo)">
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-          <div class="bottom">
-            <div class="title">National Anthem (Demo)</div>
-            <button class="play-btn" onclick="toggleAudio('song3', this)">▶</button>
-          </div>
-          <audio id="song3" src="music/nationalanthemdemo.mp3"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 4 -->
-      <div class="card" data-title="Velvet Crowbar" data-era="Born To Die Era">
-        <img src="art/velvetcrowbar.jpg" alt="Velvet Crowbar">
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-          <div class="bottom">
-            <div class="title">Velvet Crowbar</div>
-            <button class="play-btn" onclick="toggleAudio('song4', this)">▶</button>
-          </div>
-          <audio id="song4" src="music/velvetcrowbar.mp3"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 5 -->
-      <div class="card" data-title="Fine China" data-era="Ultraviolence Era">
-        <img src="art/finechina.jpg" alt="Fine China">
-        <div class="content">
-          <div class="era">Ultraviolence Era</div>
-          <div class="bottom">
-            <div class="title">Fine China</div>
-            <button class="play-btn" onclick="toggleAudio('song5', this)">▶</button>
-          </div>
-          <audio id="song5" src="music/finechina.m4a"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 6 -->
-      <div class="card" data-title="Serial Killer" data-era="Born To Die Era">
-        <img src="art/serialkiller.jpg" alt="Serial Killer">
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-          <div class="bottom">
-            <div class="title">Serial Killer</div>
-            <button class="play-btn" onclick="toggleAudio('song6', this)">▶</button>
-          </div>
-          <audio id="song6" src="music/serialkiller.m4a"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 7 -->
-      <div class="card" data-title="Queen Of Disaster" data-era="Born To Die Era">
-        <img src="art/queenofdisaster.jpg" alt="Queen Of Disaster">
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-          <div class="bottom">
-            <div class="title">Queen Of Disaster</div>
-            <button class="play-btn" onclick="toggleAudio('song7', this)">▶</button>
-          </div>
-          <audio id="song7" src="music/queenofdisaster.m4a"></audio>
-        </div>
-      </div>
-      
-      <!-- TRACK 8 -->
-      <div class="card" data-title="Trash Magic" data-era="Lizzy Grant Era">
-        <img src="art/trashmagic.jpg" alt="Trash Magic">
-        <div class="content">
-          <div class="era">Lizzy Grant Era</div>
-          <div class="bottom">
-            <div class="title">Trash Magic</div>
-            <button class="play-btn" onclick="toggleAudio('song8', this)">▶</button>
-          </div>
-          <audio id="song8" src="music/trashmagic.m4a"></audio>
-        </div>
-      </div>
-
-    </div>
+    <div class="grid" id="grid"></div>
 
     <!-- CREDIT -->
     <div class="credit">
       <span class="credit-name">archived by Ryan</span>
       <span class="credit-note">fan archive · not affiliated with artist</span>
     </div>
-
-    <div class="no-results" id="no-results">No songs found.</div>
-
-
   </div>
 
   <!-- PLAYER -->
@@ -528,7 +410,6 @@
     <div class="player-center">
       <div class="player-btns">
         <button id="loop-btn" title="Loop">
-          <!-- loop icon -->
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="17 1 21 5 17 9"/>
             <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
@@ -543,7 +424,6 @@
     </div>
 
     <div class="player-right">
-      <!-- volume icon SVG — will be swapped by JS based on level -->
       <svg id="vol-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" onclick="toggleMute()">
         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
         <path id="vol-wave-1" d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
@@ -562,18 +442,16 @@
     let isMuted       = false;
     let prevVolume    = 1;
 
-    const player    = document.getElementById("player");
-    const mainPlay  = document.getElementById("main-play");
-    const loopBtn   = document.getElementById("loop-btn");
-    const seek      = document.getElementById("seek");
-    const volSlider = document.getElementById("volume");
+    const player     = document.getElementById("player");
+    const mainPlay   = document.getElementById("main-play");
+    const loopBtn    = document.getElementById("loop-btn");
+    const seek       = document.getElementById("seek");
+    const volSlider  = document.getElementById("volume");
     const playerSong = document.getElementById("player-song");
     const playerTime = document.getElementById("player-time");
 
-    /* ---- show/hide player ---- */
     function showPlayer() { player.classList.add("visible"); }
 
-    /* ---- play / pause card button ---- */
     function toggleAudio(id, button) {
       const audio = document.getElementById(id);
 
@@ -593,11 +471,11 @@
 
       if (audio.paused) {
         audio.play();
-        button.innerHTML  = "❚❚";
+        button.innerHTML   = "❚❚";
         mainPlay.innerHTML = "❚❚";
       } else {
         audio.pause();
-        button.innerHTML  = "▶";
+        button.innerHTML   = "▶";
         mainPlay.innerHTML = "▶";
       }
 
@@ -612,7 +490,6 @@
 
     function onEnded() {
       if (!isLooping) resetPlayer();
-      /* if looping, audio.loop handles it natively */
     }
 
     function updatePlayer() {
@@ -620,8 +497,6 @@
       const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
       seek.value = progress || 0;
       playerTime.innerText = formatTime(currentAudio.currentTime) + " / " + formatTime(currentAudio.duration);
-
-      /* colour seek bar fill */
       seek.style.background = `linear-gradient(to right, #c8c4bb ${seek.value}%, rgba(255,255,255,0.15) ${seek.value}%)`;
     }
 
@@ -645,20 +520,19 @@
     }
 
     function updateVolIcon() {
-      const v = parseFloat(volSlider.value);
+      const v  = parseFloat(volSlider.value);
       const w1 = document.getElementById("vol-wave-1");
       const w2 = document.getElementById("vol-wave-2");
       const m1 = document.getElementById("vol-mute-line");
       const m2 = document.getElementById("vol-mute-line2");
-
       if (v === 0 || isMuted) {
         w1.style.display = "none"; w2.style.display = "none";
-        m1.style.display = ""; m2.style.display = "";
+        m1.style.display = "";    m2.style.display = "";
       } else if (v < 0.5) {
-        w1.style.display = ""; w2.style.display = "none";
+        w1.style.display = "";    w2.style.display = "none";
         m1.style.display = "none"; m2.style.display = "none";
       } else {
-        w1.style.display = ""; w2.style.display = "";
+        w1.style.display = "";    w2.style.display = "";
         m1.style.display = "none"; m2.style.display = "none";
       }
     }
@@ -715,7 +589,6 @@
     searchInput.addEventListener("input", () => {
       const q = searchInput.value.toLowerCase().trim();
       let visible = 0;
-
       document.querySelectorAll(".card").forEach(card => {
         const title = card.dataset.title.toLowerCase();
         const era   = card.dataset.era.toLowerCase();
@@ -723,13 +596,59 @@
         card.classList.toggle("hidden", !match);
         if (match) visible++;
       });
-
       noResults.style.display = visible === 0 ? "block" : "none";
     });
 
     /* ---- init fills ---- */
     updateVolFill();
     seek.style.background = `linear-gradient(to right, #c8c4bb 0%, rgba(255,255,255,0.15) 0%)`;
+
+    /* ========================================
+       TRACKS — edit tracks.json to add songs.
+       Format:
+       {
+         "title": "Song Name",
+         "era":   "Era Name",
+         "art":   "art/filename.jpg",
+         "src":   "music/filename.mp3"
+       }
+    ======================================== */
+    async function loadTracks() {
+      const grid = document.getElementById("grid");
+      let tracks;
+      try {
+        const res = await fetch("tracks.json");
+        if (!res.ok) throw new Error();
+        tracks = await res.json();
+      } catch {
+        grid.innerHTML = `<span style="color:#555;font-style:italic;font-size:0.85rem">Could not load tracks.json</span>`;
+        return;
+      }
+
+      tracks.forEach((track, i) => {
+        const id   = "song" + (i + 1);
+        const card = document.createElement("div");
+        card.className    = "card";
+        card.dataset.title = track.title;
+        card.dataset.era   = track.era;
+        card.innerHTML = `
+          <img src="${track.art}" alt="${track.title}">
+          <div class="content">
+            <div class="era">${track.era}</div>
+            <div class="bottom">
+              <div class="title">${track.title}</div>
+              <button class="play-btn">▶</button>
+            </div>
+            <audio id="${id}" src="${track.src}"></audio>
+          </div>`;
+        card.querySelector(".play-btn").addEventListener("click", function () {
+          toggleAudio(id, this);
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    loadTracks();
   </script>
 </body>
 </html>

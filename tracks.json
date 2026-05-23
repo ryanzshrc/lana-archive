@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Your Girl",
+    "era": "Ultraviolence Era",
+    "art": "art/yourgirl.jpg",
+    "src": "music/yourgirl.mp3"
+  },
+  {
+    "title": "Diet Mountain Dew (Demo)",
+    "era": "Born To Die Era",
+    "art": "art/dietmountaindewdemo.jpg",
+    "src": "music/dietmountaindewdemo.mp3"
+  },
+  {
+    "title": "National Anthem (Demo)",
+    "era": "Born To Die Era",
+    "art": "art/nationalanthemdemo.jpg",
+    "src": "music/nationalanthemdemo.mp3"
+  },
+  {
+    "title": "Velvet Crowbar",
+    "era": "Born To Die Era",
+    "art": "art/velvetcrowbar.jpg",
+    "src": "music/velvetcrowbar.mp3"
+  },
+  {
+    "title": "Fine China",
+    "era": "Ultraviolence Era",
+    "art": "art/finechina.jpg",
+    "src": "music/finechina.m4a"
+  },
+  {
+    "title": "Serial Killer",
+    "era": "Born To Die Era",
+    "art": "art/serialkiller.jpg",
+    "src": "music/serialkiller.m4a"
+  },
+  {
+    "title": "Queen Of Disaster",
+    "era": "Born To Die Era",
+    "art": "art/queenofdisaster.jpg",
+    "src": "music/queenofdisaster.m4a"
+  },
+  {
+    "title": "Trash Magic",
+    "era": "Lizzy Grant Era",
+    "art": "art/trashmagic.jpg",
+    "src": "music/trashmagic.m4a"
+  }
+]
