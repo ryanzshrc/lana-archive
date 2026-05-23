@@ -38,7 +38,15 @@
       padding: 40px 0;
     }
 
-    .header { margin-bottom: 32px; }
+    .header {
+      margin-bottom: 32px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .header-left { flex: 1; }
 
     .subtitle {
       text-transform: uppercase;
@@ -48,19 +56,33 @@
       margin-bottom: 16px;
     }
 
+    .credit-top {
+      font-size: 0.7rem;
+      color: #3a3a3a;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
     h1 {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(3rem, 8vw, 6rem);
       font-style: italic;
       line-height: 0.9;
-      margin-bottom: 24px;
+      margin-bottom: 0;
     }
 
     /* ===== SEARCH ===== */
     .search-wrap {
       position: relative;
-      max-width: 360px;
-      margin-bottom: 36px;
+      width: 260px;
+      flex-shrink: 0;
+      margin-bottom: 6px; /* align with h1 baseline */
+    }
+
+    @media (max-width: 600px) {
+      .header { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .search-wrap { width: 100%; margin-bottom: 0; }
     }
 
     .search-wrap svg {
@@ -96,7 +118,7 @@
       display: none;
       color: #555;
       font-size: 0.875rem;
-      margin-top: 20px;
+      margin-bottom: 20px;
       font-style: italic;
     }
 
@@ -362,18 +384,20 @@
 
   <div class="container">
     <div class="header">
-      <div class="subtitle">Unreleased Archive</div>
-      <h1>Lana Archive</h1>
+      <div class="header-left">
+        <div class="subtitle">Unreleased Archive</div>
+        <h1>Lana Archive</h1>
+      </div>
+
+      <div class="search-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="search" placeholder="Search songs, eras…" autocomplete="off" spellcheck="false" />
+      </div>
     </div>
 
-    <!-- SEARCH -->
-    <div class="search-wrap">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <input type="text" id="search" placeholder="Search songs, eras…" autocomplete="off" spellcheck="false" />
-    </div>
-
+    <div class="no-results" id="no-results">No songs found.</div>
     <div class="grid" id="grid">
 
       <!-- TRACK 1 -->
@@ -466,16 +490,31 @@
           <audio id="song7" src="music/queenofdisaster.m4a"></audio>
         </div>
       </div>
+      
+      <!-- TRACK 8 -->
+      <div class="card" data-title="Trash Magic" data-era="Lizzy Grant Era">
+        <img src="art/trashmagic.jpg" alt="Trash Magic">
+        <div class="content">
+          <div class="era">Lizzy Grant Era</div>
+          <div class="bottom">
+            <div class="title">Trash Magic</div>
+            <button class="play-btn" onclick="toggleAudio('song8', this)">▶</button>
+          </div>
+          <audio id="song8" src="music/trashmagic.m4a"></audio>
+        </div>
+      </div>
 
+    </div>
+
+    <!-- CREDIT -->
+    <div class="credit">
+      <span class="credit-name">archived by Ryan</span>
+      <span class="credit-note">fan archive · not affiliated with artist</span>
     </div>
 
     <div class="no-results" id="no-results">No songs found.</div>
 
-    <!-- CREDIT -->
-    <div class="credit">
-      <span class="credit-name">archived by your name</span>
-      <span class="credit-note">fan archive · not affiliated with artist</span>
-    </div>
+
   </div>
 
   <!-- PLAYER -->
