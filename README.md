@@ -15,3 +15,4 @@ ___
 4. Velvet Crowbar
 5. Fine China
 6. Serial Killer
+7. Queen of Disaster
