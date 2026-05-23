@@ -7,22 +7,17 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', sans-serif;
       background: #050505;
       color: white;
       overflow-x: hidden;
-      padding-bottom: 110px;
+      padding-bottom: 130px;
     }
 
     .background {
@@ -43,9 +38,7 @@
       padding: 40px 0;
     }
 
-    .header {
-      margin-bottom: 40px;
-    }
+    .header { margin-bottom: 32px; }
 
     .subtitle {
       text-transform: uppercase;
@@ -60,38 +53,63 @@
       font-size: clamp(3rem, 8vw, 6rem);
       font-style: italic;
       line-height: 0.9;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
-    .description {
-      max-width: 600px;
-      color: #aaa;
-      line-height: 1.7;
+    /* ===== SEARCH ===== */
+    .search-wrap {
+      position: relative;
+      max-width: 360px;
+      margin-bottom: 36px;
     }
 
+    .search-wrap svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    #search {
+      width: 100%;
+      padding: 10px 16px 10px 40px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    #search::placeholder { color: #555; }
+
+    #search:focus {
+      border-color: rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.09);
+    }
+
+    .no-results {
+      display: none;
+      color: #555;
+      font-size: 0.875rem;
+      margin-top: 20px;
+      font-style: italic;
+    }
+
+    /* ===== GRID ===== */
     .grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
     }
 
-    @media (max-width: 1100px) {
-      .grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 800px) {
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 500px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    @media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 800px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px)  { .grid { grid-template-columns: 1fr; } }
 
     .card {
       background: rgba(255,255,255,0.05);
@@ -99,13 +117,15 @@
       border-radius: 20px;
       overflow: hidden;
       backdrop-filter: blur(20px);
-      transition: 0.25s ease;
+      transition: transform 0.25s ease, border-color 0.25s ease, opacity 0.2s;
     }
 
     .card:hover {
       transform: translateY(-4px);
       border-color: rgba(255,255,255,0.2);
     }
+
+    .card.hidden { display: none; }
 
     .card img {
       width: 100%;
@@ -114,9 +134,7 @@
       display: block;
     }
 
-    .content {
-      padding: 10px;
-    }
+    .content { padding: 10px; }
 
     .era {
       text-transform: uppercase;
@@ -133,12 +151,9 @@
       gap: 10px;
     }
 
-    .title {
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
+    .title { font-size: 0.95rem; font-weight: 600; }
 
-    button {
+    button.play-btn {
       width: 34px;
       height: 34px;
       border-radius: 50%;
@@ -147,15 +162,41 @@
       color: black;
       cursor: pointer;
       font-size: 0.75rem;
-      transition: 0.2s ease;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    button:hover {
-      transform: scale(1.08);
+    button.play-btn:hover { transform: scale(1.08); }
+
+    /* ===== FOOTER CREDIT ===== */
+    .credit {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .credit-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: #444;
+    }
+
+    .credit-note {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: #333;
     }
 
     /* ===== PLAYER ===== */
-
     .music-player {
       position: fixed;
       bottom: 0;
@@ -163,41 +204,49 @@
       width: 100%;
       height: 82px;
 
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(20px);
-
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(24px);
       border-top: 1px solid rgba(255,255,255,0.08);
 
       display: flex;
       align-items: center;
       justify-content: space-between;
-
-      padding: 0 20px;
+      padding: 0 24px;
       z-index: 9999;
+
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .player-info {
-      width: 220px;
-    }
+    .music-player.visible { transform: translateY(0); }
+
+    .player-info { width: 220px; }
 
     #player-song {
       font-weight: 600;
       font-size: 0.95rem;
       margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    #player-time {
-      color: #888;
-      font-size: 0.75rem;
-    }
+    #player-time { color: #666; font-size: 0.75rem; }
 
     .player-center {
       flex: 1;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       max-width: 700px;
       margin: 0 20px;
+    }
+
+    .player-btns {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
     #main-play {
@@ -209,40 +258,101 @@
       color: black;
       cursor: pointer;
       font-size: 0.9rem;
-      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease;
     }
 
-    #seek {
-      width: 100%;
+    #main-play:hover { transform: scale(1.06); }
+
+    #loop-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: transparent;
+      color: #666;
+      cursor: pointer;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+
+    #loop-btn:hover { color: #aaa; border-color: rgba(255,255,255,0.3); }
+    #loop-btn.active { color: white; border-color: white; background: rgba(255,255,255,0.1); }
+
+    /* ===== RANGE INPUTS ===== */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.15);
+      outline: none;
       cursor: pointer;
     }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #d4d0c8;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      background: white;
+      transform: scale(1.2);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #d4d0c8;
+      border: none;
+      cursor: pointer;
+    }
+
+    #seek { width: 100%; }
 
     .player-right {
       width: 140px;
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-shrink: 0;
     }
 
-    #volume {
-      width: 100%;
+    #vol-icon {
+      flex-shrink: 0;
+      opacity: 0.6;
       cursor: pointer;
+      transition: opacity 0.2s;
     }
+
+    #vol-icon:hover { opacity: 1; }
+
+    #volume { width: 100%; }
 
     @media (max-width: 700px) {
       .music-player {
         flex-direction: column;
         height: auto;
-        padding: 12px;
+        padding: 14px;
         gap: 12px;
       }
-
-      .player-info,
-      .player-right,
-      .player-center {
+      .player-info, .player-right, .player-center {
         width: 100%;
         max-width: 100%;
+        margin: 0;
       }
+      body { padding-bottom: 180px; }
     }
   </style>
 </head>
@@ -254,128 +364,122 @@
     <div class="header">
       <div class="subtitle">Unreleased Archive</div>
       <h1>Lana Archive</h1>
-      <p class="description">By Ryan</p>
     </div>
 
-    <div class="grid">
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" id="search" placeholder="Search songs, eras…" autocomplete="off" spellcheck="false" />
+    </div>
+
+    <div class="grid" id="grid">
 
       <!-- TRACK 1 -->
-      <div class="card">
-        <img src="art/yourgirl.jpg">
-
+      <div class="card" data-title="Your Girl" data-era="Ultraviolence Era">
+        <img src="art/yourgirl.jpg" alt="Your Girl">
         <div class="content">
           <div class="era">Ultraviolence Era</div>
-
           <div class="bottom">
             <div class="title">Your Girl</div>
-            <button onclick="toggleAudio('song1', this)">▶</button>
+            <button class="play-btn" onclick="toggleAudio('song1', this)">▶</button>
           </div>
-
           <audio id="song1" src="music/yourgirl.mp3"></audio>
         </div>
       </div>
 
       <!-- TRACK 2 -->
-      <div class="card">
-        <img src="art/dietmountaindewdemo.jpg">
-
+      <div class="card" data-title="Diet Mountain Dew Demo" data-era="Born To Die Era">
+        <img src="art/dietmountaindewdemo.jpg" alt="Diet Mountain Dew (Demo)">
         <div class="content">
           <div class="era">Born To Die Era</div>
-
           <div class="bottom">
             <div class="title">Diet Mountain Dew (Demo)</div>
-            <button onclick="toggleAudio('song2', this)">▶</button>
+            <button class="play-btn" onclick="toggleAudio('song2', this)">▶</button>
           </div>
-
           <audio id="song2" src="music/dietmountaindewdemo.mp3"></audio>
         </div>
       </div>
 
       <!-- TRACK 3 -->
-      <div class="card">
-        <img src="art/nationalanthemdemo.jpg">
-
+      <div class="card" data-title="National Anthem Demo" data-era="Born To Die Era">
+        <img src="art/nationalanthemdemo.jpg" alt="National Anthem (Demo)">
         <div class="content">
           <div class="era">Born To Die Era</div>
-
           <div class="bottom">
             <div class="title">National Anthem (Demo)</div>
-            <button onclick="toggleAudio('song3', this)">▶</button>
+            <button class="play-btn" onclick="toggleAudio('song3', this)">▶</button>
           </div>
-
           <audio id="song3" src="music/nationalanthemdemo.mp3"></audio>
         </div>
       </div>
 
       <!-- TRACK 4 -->
-      <div class="card">
-        <img src="art/velvetcrowbar.jpg">
-
+      <div class="card" data-title="Velvet Crowbar" data-era="Born To Die Era">
+        <img src="art/velvetcrowbar.jpg" alt="Velvet Crowbar">
         <div class="content">
           <div class="era">Born To Die Era</div>
-
           <div class="bottom">
             <div class="title">Velvet Crowbar</div>
-            <button onclick="toggleAudio('song4', this)">▶</button>
+            <button class="play-btn" onclick="toggleAudio('song4', this)">▶</button>
           </div>
-
           <audio id="song4" src="music/velvetcrowbar.mp3"></audio>
         </div>
       </div>
 
       <!-- TRACK 5 -->
-      <div class="card">
-        <img src="art/finechina.jpg">
-
+      <div class="card" data-title="Fine China" data-era="Ultraviolence Era">
+        <img src="art/finechina.jpg" alt="Fine China">
         <div class="content">
           <div class="era">Ultraviolence Era</div>
-
           <div class="bottom">
             <div class="title">Fine China</div>
-            <button onclick="toggleAudio('song5', this)">▶</button>
+            <button class="play-btn" onclick="toggleAudio('song5', this)">▶</button>
           </div>
-
           <audio id="song5" src="music/finechina.m4a"></audio>
         </div>
       </div>
 
       <!-- TRACK 6 -->
-      <div class="card">
-        <img src="art/serialkiller.jpg">
-
+      <div class="card" data-title="Serial Killer" data-era="Born To Die Era">
+        <img src="art/serialkiller.jpg" alt="Serial Killer">
         <div class="content">
           <div class="era">Born To Die Era</div>
-
           <div class="bottom">
             <div class="title">Serial Killer</div>
-            <button onclick="toggleAudio('song6', this)">▶</button>
+            <button class="play-btn" onclick="toggleAudio('song6', this)">▶</button>
           </div>
-
           <audio id="song6" src="music/serialkiller.m4a"></audio>
         </div>
       </div>
 
       <!-- TRACK 7 -->
-      <div class="card">
-        <img src="art/queenofdisaster.jpg">
-
+      <div class="card" data-title="Queen Of Disaster" data-era="Born To Die Era">
+        <img src="art/queenofdisaster.jpg" alt="Queen Of Disaster">
         <div class="content">
           <div class="era">Born To Die Era</div>
-
           <div class="bottom">
             <div class="title">Queen Of Disaster</div>
-            <button onclick="toggleAudio('song7', this)">▶</button>
+            <button class="play-btn" onclick="toggleAudio('song7', this)">▶</button>
           </div>
-
           <audio id="song7" src="music/queenofdisaster.m4a"></audio>
         </div>
       </div>
 
     </div>
+
+    <div class="no-results" id="no-results">No songs found.</div>
+
+    <!-- CREDIT -->
+    <div class="credit">
+      <span class="credit-name">archived by your name</span>
+      <span class="credit-note">fan archive · not affiliated with artist</span>
+    </div>
   </div>
 
   <!-- PLAYER -->
-  <div class="music-player">
+  <div class="music-player" id="player">
 
     <div class="player-info">
       <div id="player-song">Nothing Playing</div>
@@ -383,152 +487,210 @@
     </div>
 
     <div class="player-center">
-      <button id="main-play">▶</button>
+      <div class="player-btns">
+        <button id="loop-btn" title="Loop">
+          <!-- loop icon -->
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="17 1 21 5 17 9"/>
+            <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+            <polyline points="7 23 3 19 7 15"/>
+            <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+          </svg>
+        </button>
+        <button id="main-play">▶</button>
+      </div>
 
-      <input
-        type="range"
-        id="seek"
-        min="0"
-        max="100"
-        value="0"
-      />
+      <input type="range" id="seek" min="0" max="100" value="0" />
     </div>
 
     <div class="player-right">
-      <span>🕪</span>
-
-      <input
-        type="range"
-        id="volume"
-        min="0"
-        max="1"
-        step="0.01"
-        value="1"
-      />
+      <!-- volume icon SVG — will be swapped by JS based on level -->
+      <svg id="vol-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" onclick="toggleMute()">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <path id="vol-wave-1" d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        <path id="vol-wave-2" d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+        <line id="vol-mute-line" x1="23" y1="9" x2="17" y2="15" style="display:none"/>
+        <line id="vol-mute-line2" x1="17" y1="9" x2="23" y2="15" style="display:none"/>
+      </svg>
+      <input type="range" id="volume" min="0" max="1" step="0.01" value="1" />
     </div>
-
   </div>
 
   <script>
-    let currentAudio = null;
+    let currentAudio  = null;
     let currentButton = null;
+    let isLooping     = false;
+    let isMuted       = false;
+    let prevVolume    = 1;
 
-    const mainPlay = document.getElementById("main-play");
-    const seek = document.getElementById("seek");
-    const volume = document.getElementById("volume");
+    const player    = document.getElementById("player");
+    const mainPlay  = document.getElementById("main-play");
+    const loopBtn   = document.getElementById("loop-btn");
+    const seek      = document.getElementById("seek");
+    const volSlider = document.getElementById("volume");
     const playerSong = document.getElementById("player-song");
     const playerTime = document.getElementById("player-time");
 
+    /* ---- show/hide player ---- */
+    function showPlayer() { player.classList.add("visible"); }
+
+    /* ---- play / pause card button ---- */
     function toggleAudio(id, button) {
       const audio = document.getElementById(id);
 
-      document.querySelectorAll(".card button").forEach(btn => {
-        btn.innerText = "▶";
-      });
+      document.querySelectorAll(".play-btn").forEach(b => { b.innerHTML = "▶"; });
 
       if (currentAudio && currentAudio !== audio) {
         currentAudio.pause();
         currentAudio.currentTime = 0;
       }
 
-      currentAudio = audio;
+      currentAudio  = audio;
       currentButton = button;
+      audio.loop    = isLooping;
 
-      const title =
-        button.parentElement.querySelector(".title").innerText;
-
-      playerSong.innerText = title;
+      playerSong.innerText = button.closest(".card").querySelector(".title").innerText;
+      showPlayer();
 
       if (audio.paused) {
         audio.play();
-        button.innerText = "❚❚";
-        mainPlay.innerText = "❚❚";
+        button.innerHTML  = "❚❚";
+        mainPlay.innerHTML = "❚❚";
       } else {
         audio.pause();
-        button.innerText = "▶";
-        mainPlay.innerText = "▶";
+        button.innerHTML  = "▶";
+        mainPlay.innerHTML = "▶";
       }
 
-      audio.volume = volume.value;
+      audio.volume = volSlider.value;
 
       audio.removeEventListener("timeupdate", updatePlayer);
       audio.addEventListener("timeupdate", updatePlayer);
 
-      audio.removeEventListener("ended", resetPlayer);
-      audio.addEventListener("ended", resetPlayer);
+      audio.removeEventListener("ended", onEnded);
+      audio.addEventListener("ended", onEnded);
+    }
+
+    function onEnded() {
+      if (!isLooping) resetPlayer();
+      /* if looping, audio.loop handles it natively */
     }
 
     function updatePlayer() {
       if (!currentAudio) return;
-
-      const progress =
-        (currentAudio.currentTime / currentAudio.duration) * 100;
-
+      const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
       seek.value = progress || 0;
+      playerTime.innerText = formatTime(currentAudio.currentTime) + " / " + formatTime(currentAudio.duration);
 
-      playerTime.innerText =
-        formatTime(currentAudio.currentTime) +
-        " / " +
-        formatTime(currentAudio.duration);
+      /* colour seek bar fill */
+      seek.style.background = `linear-gradient(to right, #c8c4bb ${seek.value}%, rgba(255,255,255,0.15) ${seek.value}%)`;
     }
 
     seek.addEventListener("input", () => {
       if (!currentAudio) return;
-
-      currentAudio.currentTime =
-        (seek.value / 100) * currentAudio.duration;
+      currentAudio.currentTime = (seek.value / 100) * currentAudio.duration;
+      seek.style.background = `linear-gradient(to right, #c8c4bb ${seek.value}%, rgba(255,255,255,0.15) ${seek.value}%)`;
     });
 
-    volume.addEventListener("input", () => {
-      if (!currentAudio) return;
-
-      currentAudio.volume = volume.value;
+    volSlider.addEventListener("input", () => {
+      if (currentAudio) currentAudio.volume = volSlider.value;
+      isMuted = volSlider.value == 0;
+      prevVolume = volSlider.value > 0 ? volSlider.value : prevVolume;
+      updateVolIcon();
+      updateVolFill();
     });
+
+    function updateVolFill() {
+      const pct = volSlider.value * 100;
+      volSlider.style.background = `linear-gradient(to right, #c8c4bb ${pct}%, rgba(255,255,255,0.15) ${pct}%)`;
+    }
+
+    function updateVolIcon() {
+      const v = parseFloat(volSlider.value);
+      const w1 = document.getElementById("vol-wave-1");
+      const w2 = document.getElementById("vol-wave-2");
+      const m1 = document.getElementById("vol-mute-line");
+      const m2 = document.getElementById("vol-mute-line2");
+
+      if (v === 0 || isMuted) {
+        w1.style.display = "none"; w2.style.display = "none";
+        m1.style.display = ""; m2.style.display = "";
+      } else if (v < 0.5) {
+        w1.style.display = ""; w2.style.display = "none";
+        m1.style.display = "none"; m2.style.display = "none";
+      } else {
+        w1.style.display = ""; w2.style.display = "";
+        m1.style.display = "none"; m2.style.display = "none";
+      }
+    }
+
+    function toggleMute() {
+      if (isMuted) {
+        volSlider.value = prevVolume;
+        isMuted = false;
+      } else {
+        prevVolume = volSlider.value;
+        volSlider.value = 0;
+        isMuted = true;
+      }
+      if (currentAudio) currentAudio.volume = volSlider.value;
+      updateVolIcon();
+      updateVolFill();
+    }
 
     mainPlay.addEventListener("click", () => {
       if (!currentAudio) return;
-
       if (currentAudio.paused) {
         currentAudio.play();
-
-        mainPlay.innerText = "❚❚";
-
-        if (currentButton) {
-          currentButton.innerText = "❚❚";
-        }
-
+        mainPlay.innerHTML = "❚❚";
+        if (currentButton) currentButton.innerHTML = "❚❚";
       } else {
         currentAudio.pause();
-
-        mainPlay.innerText = "▶";
-
-        if (currentButton) {
-          currentButton.innerText = "▶";
-        }
+        mainPlay.innerHTML = "▶";
+        if (currentButton) currentButton.innerHTML = "▶";
       }
     });
 
+    loopBtn.addEventListener("click", () => {
+      isLooping = !isLooping;
+      loopBtn.classList.toggle("active", isLooping);
+      if (currentAudio) currentAudio.loop = isLooping;
+    });
+
     function resetPlayer() {
-      mainPlay.innerText = "▶";
-
-      if (currentButton) {
-        currentButton.innerText = "▶";
-      }
-
+      mainPlay.innerHTML = "▶";
+      if (currentButton) currentButton.innerHTML = "▶";
       seek.value = 0;
+      seek.style.background = `linear-gradient(to right, #c8c4bb 0%, rgba(255,255,255,0.15) 0%)`;
     }
 
-    function formatTime(seconds) {
-      if (isNaN(seconds)) return "0:00";
-
-      const mins = Math.floor(seconds / 60);
-
-      const secs = Math.floor(seconds % 60)
-        .toString()
-        .padStart(2, "0");
-
-      return mins + ":" + secs;
+    function formatTime(s) {
+      if (isNaN(s)) return "0:00";
+      return Math.floor(s / 60) + ":" + Math.floor(s % 60).toString().padStart(2, "0");
     }
+
+    /* ---- search ---- */
+    const searchInput = document.getElementById("search");
+    const noResults   = document.getElementById("no-results");
+
+    searchInput.addEventListener("input", () => {
+      const q = searchInput.value.toLowerCase().trim();
+      let visible = 0;
+
+      document.querySelectorAll(".card").forEach(card => {
+        const title = card.dataset.title.toLowerCase();
+        const era   = card.dataset.era.toLowerCase();
+        const match = !q || title.includes(q) || era.includes(q);
+        card.classList.toggle("hidden", !match);
+        if (match) visible++;
+      });
+
+      noResults.style.display = visible === 0 ? "block" : "none";
+    });
+
+    /* ---- init fills ---- */
+    updateVolFill();
+    seek.style.background = `linear-gradient(to right, #c8c4bb 0%, rgba(255,255,255,0.15) 0%)`;
   </script>
 </body>
 </html>
