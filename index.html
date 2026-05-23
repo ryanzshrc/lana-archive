@@ -7,760 +7,288 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #050505;
-      color: white;
-      overflow-x: hidden;
-      padding-bottom: 110px;
+      background:#050505;
+      color:white;
+      overflow-x:hidden;
+      padding-bottom:100px;
     }
 
     .background {
-      position: fixed;
-      inset: 0;
-      background-image: url('assets/background.jpg');
-      background-size: cover;
-      background-position: center;
-      filter: blur(8px);
-      opacity: 0.15;
-      transform: scale(1.1);
-      z-index: -1;
+      position:fixed;
+      inset:0;
+      background:url('assets/background.jpg') center/cover;
+      filter:blur(8px);
+      opacity:0.15;
+      transform:scale(1.1);
+      z-index:-1;
     }
 
-    .container {
-      width: min(1200px, 92%);
-      margin: auto;
-      padding: 40px 0;
-    }
-
-    .header {
-      margin-bottom: 40px;
-    }
-
-    .subtitle {
-      text-transform: uppercase;
-      letter-spacing: 0.4em;
-      color: #999;
-      font-size: 0.75rem;
-      margin-bottom: 16px;
-    }
+    .container { width:min(1200px,92%); margin:auto; padding:40px 0; }
 
     h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-style: italic;
-      line-height: 0.9;
-      margin-bottom: 20px;
-    }
-
-    .description {
-      max-width: 600px;
-      color: #aaa;
-      line-height: 1.7;
+      font-family:'Cormorant Garamond', serif;
+      font-size:clamp(3rem,8vw,6rem);
+      font-style:italic;
+      margin-bottom:20px;
     }
 
     .grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
     }
 
-    @media (max-width: 1100px) {
-      .grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 800px) {
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 500px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    @media(max-width:900px){ .grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:500px){ .grid{grid-template-columns:1fr;} }
 
     .card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      overflow: hidden;
-      backdrop-filter: blur(20px);
-      transition: 0.25s ease;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:18px;
+      overflow:hidden;
     }
 
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(255,255,255,0.2);
-    }
+    .card img { width:100%; aspect-ratio:1; object-fit:cover; }
 
-    .card img {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      display: block;
-    }
-
-    .content {
-      padding: 10px;
-    }
-
-    .era {
-      text-transform: uppercase;
-      letter-spacing: 0.25em;
-      color: #888;
-      font-size: 0.65rem;
-      margin-bottom: 6px;
-    }
+    .content { padding:10px; }
 
     .bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .title {
-      font-size: 0.95rem;
-      font-weight: 600;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
     }
 
     button {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: none;
-      background: white;
-      color: black;
-      cursor: pointer;
-      font-size: 0.75rem;
-      transition: 0.2s ease;
-    }
-
-    button:hover {
-      transform: scale(1.08);
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      border:none;
+      background:white;
+      cursor:pointer;
     }
 
     /* ===== PLAYER ===== */
 
-    .music-player {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 82px;
-
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(20px);
-
-      border-top: 1px solid rgba(255,255,255,0.08);
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 0 20px;
-      z-index: 9999;
+    .player {
+      position:fixed;
+      bottom:0;
+      left:0;
+      width:100%;
+      height:80px;
+      display:none; /* hidden until play */
+      align-items:center;
+      justify-content:space-between;
+      padding:0 20px;
+      background:rgba(10,10,10,0.92);
+      backdrop-filter:blur(20px);
+      border-top:1px solid rgba(255,255,255,0.08);
+      z-index:9999;
     }
 
-    .player-info {
-      width: 220px;
+    .player.show { display:flex; }
+
+    .center {
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:0 20px;
     }
 
-    #player-song {
-      font-weight: 600;
-      font-size: 0.95rem;
-      margin-bottom: 4px;
+    #seek { width:100%; }
+
+    .icon-btn {
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      border:none;
+      background:white;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
-    #player-time {
-      color: #888;
-      font-size: 0.75rem;
+    .icon-btn svg {
+      width:18px;
+      height:18px;
+      fill:currentColor;
     }
 
-    .player-center {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      max-width: 700px;
-      margin: 0 20px;
+    .right {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      width:140px;
     }
 
-    #main-play {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      border: none;
-      background: white;
-      color: black;
-      cursor: pointer;
-      font-size: 0.9rem;
-      flex-shrink: 0;
-    }
-
-    #seek {
-      width: 100%;
-      cursor: pointer;
-    }
-
-    .player-right {
-      width: 140px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    #volume {
-      width: 100%;
-      cursor: pointer;
-    }
-
-    @media (max-width: 700px) {
-      .music-player {
-        flex-direction: column;
-        height: auto;
-        padding: 12px;
-        gap: 12px;
-      }
-
-      .player-info,
-      .player-right,
-      .player-center {
-        width: 100%;
-        max-width: 100%;
-      }
-    }
+    #volume { width:100%; }
   </style>
 </head>
 
 <body>
-  <div class="background"></div>
 
-  <div class="container">
-    <div class="header">
-      <div class="subtitle">Unreleased Archive</div>
-      <h1>Lana Archive</h1>
-      <p class="description">Lana Del Rey unreleased music</p>
+<div class="background"></div>
+
+<div class="container">
+  <h1>Lana Archive</h1>
+
+  <div class="grid">
+
+    <div class="card">
+      <img src="art/yourgirl.jpg">
+      <div class="content">
+        <div class="bottom">
+          <div>Your Girl</div>
+          <button onclick="playSong('song1', this)">▶</button>
+        </div>
+        <audio id="song1" src="music/yourgirl.mp3"></audio>
+      </div>
     </div>
 
-    <div class="grid">
-
-      <!-- TRACK 1 -->
-      <div class="card">
-        <img src="art/yourgirl.jpg">
-
-        <div class="content">
-          <div class="era">Ultraviolence Era</div>
-
-          <div class="bottom">
-            <div class="title">Your Girl</div>
-            <button onclick="toggleAudio('song1', this)">▶</button>
-          </div>
-
-          <audio id="song1" src="music/yourgirl.mp3"></audio>
+    <div class="card">
+      <img src="art/dietmountaindewdemo.jpg">
+      <div class="content">
+        <div class="bottom">
+          <div>Diet Mountain Dew</div>
+          <button onclick="playSong('song2', this)">▶</button>
         </div>
+        <audio id="song2" src="music/dietmountaindewdemo.mp3"></audio>
       </div>
-
-      <!-- TRACK 2 -->
-      <div class="card">
-        <img src="art/dietmountaindewdemo.jpg">
-
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-
-          <div class="bottom">
-            <div class="title">Diet Mountain Dew (Demo)</div>
-            <button onclick="toggleAudio('song2', this)">▶</button>
-          </div>
-
-          <audio id="song2" src="music/dietmountaindewdemo.mp3"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 3 -->
-      <div class="card">
-        <img src="art/nationalanthemdemo.jpg">
-
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-
-          <div class="bottom">
-            <div class="title">National Anthem (Demo)</div>
-            <button onclick="toggleAudio('song3', this)">▶</button>
-          </div>
-
-          <audio id="song3" src="music/nationalanthemdemo.mp3"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 4 -->
-      <div class="card">
-        <img src="art/velvetcrowbar.jpg">
-
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-
-          <div class="bottom">
-            <div class="title">Velvet Crowbar</div>
-            <button onclick="toggleAudio('song4', this)">▶</button>
-          </div>
-
-          <audio id="song4" src="music/velvetcrowbar.mp3"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 5 -->
-      <div class="card">
-        <img src="art/finechina.jpg">
-
-        <div class="content">
-          <div class="era">Ultraviolence Era</div>
-
-          <div class="bottom">
-            <div class="title">Fine China</div>
-            <button onclick="toggleAudio('song5', this)">▶</button>
-          </div>
-
-          <audio id="song5" src="music/finechina.m4a"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 6 -->
-      <div class="card">
-        <img src="art/serialkiller.jpg">
-
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-
-          <div class="bottom">
-            <div class="title">Serial Killer</div>
-            <button onclick="toggleAudio('song6', this)">▶</button>
-          </div>
-
-          <audio id="song6" src="music/serialkiller.m4a"></audio>
-        </div>
-      </div>
-
-      <!-- TRACK 7 -->
-      <div class="card">
-        <img src="art/queenofdisaster.jpg">
-
-        <div class="content">
-          <div class="era">Born To Die Era</div>
-
-          <div class="bottom">
-            <div class="title">Queen Of Disaster</div>
-            <button onclick="toggleAudio('song7', this)">▶</button>
-          </div>
-
-          <audio id="song7" src="music/queenofdisaster.m4a"></audio>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- PLAYER -->
-  <div class="music-player">
-
-    <div class="player-info">
-      <div id="player-song">Nothing Playing</div>
-      <div id="player-time">0:00 / 0:00</div>
     </div>
 
-    <div class="player-center">
-      <button id="main-play">▶</button>
-
-      <input
-        type="range"
-        id="seek"
-        min="0"
-        max="100"
-        value="0"
-      />
-    </div>
-
-    <div class="player-right">
-      <span>🔊</span>
-
-      <input
-        type="range"
-        id="volume"
-        min="0"
-        max="1"
-        step="0.01"
-        value="1"
-      />
+    <div class="card">
+      <img src="art/nationalanthemdemo.jpg">
+      <div class="content">
+        <div class="bottom">
+          <div>National Anthem</div>
+          <button onclick="playSong('song3', this)">▶</button>
+        </div>
+        <audio id="song3" src="music/nationalanthemdemo.mp3"></audio>
+      </div>
     </div>
 
   </div>
+</div>
 
-  <script>
-  let currentAudio = null;
-  let currentButton = null;
-  let isLooping = false;
+<!-- PLAYER -->
+<div class="player" id="player">
 
-  const tracks = [
-    "song1",
-    "song2",
-    "song3",
-    "song4",
-    "song5",
-    "song6",
-    "song7"
-  ];
+  <div id="now">Nothing Playing</div>
 
-  // ===== PLAYER =====
-  const player = document.createElement("div");
+  <div class="center">
+    <button class="icon-btn" id="playBtn">▶</button>
+    <input type="range" id="seek" min="0" max="100" value="0">
+  </div>
 
-  player.innerHTML = `
-    <div class="music-player">
+  <div class="right">
+    <svg viewBox="0 0 24 24">
+      <path d="M5 9v6h4l5 5V4L9 9H5z"/>
+    </svg>
+    <input type="range" id="volume" min="0" max="1" step="0.01">
+  </div>
 
-      <div class="player-info">
-        <div id="player-song">Nothing Playing</div>
-        <div id="player-time">0:00 / 0:00</div>
-      </div>
+</div>
 
-      <div class="player-center">
-        <button id="main-play">▶</button>
+<script>
+let currentAudio = null;
+let currentBtn = null;
 
-        <button id="loop-btn" title="Loop">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M17 17H6V14L2 18L6 22V19H19C20.1 19 21 18.1 21 17V13H19V17H17Z"/>
-            <path d="M7 7H18V10L22 6L18 2V5H5C3.9 5 3 5.9 3 7V11H5V7H7Z"/>
-          </svg>
-        </button>
+const songs = ["song1","song2","song3"];
 
-        <input
-          type="range"
-          id="seek"
-          min="0"
-          max="100"
-          value="0"
-        />
-      </div>
+const player = document.getElementById("player");
+const now = document.getElementById("now");
+const playBtn = document.getElementById("playBtn");
+const seek = document.getElementById("seek");
+const volume = document.getElementById("volume");
 
-      <div class="player-right">
+function showPlayer() {
+  player.classList.add("show");
+}
 
-        <svg class="volume-icon" viewBox="0 0 24 24" fill="none">
-          <path d="M5 9V15H9L14 20V4L9 9H5Z"/>
-          <path d="M18 9C19.2 10.2 19.2 13.8 18 15"/>
-          <path d="M20.5 6.5C23.5 9.5 23.5 14.5 20.5 17.5"/>
-        </svg>
+/* ===== PLAY FROM GRID ===== */
+function playSong(id, btn) {
+  const audio = document.getElementById(id);
 
-        <input
-          type="range"
-          id="volume"
-          min="0"
-          max="1"
-          step="0.01"
-          value="1"
-        />
-      </div>
-
-    </div>
-  `;
-
-  document.body.appendChild(player);
-
-  // ===== STYLE =====
-  const style = document.createElement("style");
-
-  style.innerHTML = `
-    body {
-      padding-bottom: 90px;
-    }
-
-    .music-player {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 78px;
-
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(20px);
-
-      border-top: 1px solid rgba(255,255,255,0.08);
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 0 20px;
-      z-index: 9999;
-    }
-
-    .player-info {
-      width: 220px;
-    }
-
-    #player-song {
-      font-weight: 600;
-      font-size: 0.95rem;
-      margin-bottom: 4px;
-    }
-
-    #player-time {
-      color: #888;
-      font-size: 0.75rem;
-    }
-
-    .player-center {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      max-width: 700px;
-      margin: 0 20px;
-    }
-
-    .player-right {
-      width: 140px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    #main-play,
-    #loop-btn {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      border: none;
-      background: white;
-      color: black;
-      cursor: pointer;
-      flex-shrink: 0;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #loop-btn {
-      background: rgba(255,255,255,0.1);
-      color: white;
-    }
-
-    #loop-btn.active {
-      background: white;
-      color: black;
-    }
-
-    #loop-btn svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-    }
-
-    .volume-icon {
-      width: 20px;
-      height: 20px;
-      stroke: white;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      flex-shrink: 0;
-    }
-
-    #seek,
-    #volume {
-      width: 100%;
-      cursor: pointer;
-    }
-
-    @media (max-width: 700px) {
-      .music-player {
-        flex-direction: column;
-        height: auto;
-        padding: 12px;
-        gap: 12px;
-      }
-
-      .player-info,
-      .player-right,
-      .player-center {
-        width: 100%;
-        max-width: 100%;
-      }
-    }
-  `;
-
-  document.head.appendChild(style);
-
-  // ===== ELEMENTS =====
-  const mainPlay = document.getElementById("main-play");
-  const loopBtn = document.getElementById("loop-btn");
-  const seek = document.getElementById("seek");
-  const volume = document.getElementById("volume");
-
-  const playerSong = document.getElementById("player-song");
-  const playerTime = document.getElementById("player-time");
-
-  // ===== AUDIO =====
-  function toggleAudio(id, button) {
-    const audio = document.getElementById(id);
-
-    document.querySelectorAll(".card button").forEach(btn => {
-      btn.innerText = "▶";
-    });
-
-    if (currentAudio && currentAudio !== audio) {
-      currentAudio.pause();
-    }
-
-    currentAudio = audio;
-    currentButton = button;
-
-    const title =
-      button.parentElement.querySelector(".title").innerText;
-
-    playerSong.innerText = title;
-
-    currentAudio.loop = isLooping;
-
-    if (audio.paused) {
-      audio.play();
-
-      button.innerText = "❚❚";
-      mainPlay.innerText = "❚❚";
-    } else {
-      audio.pause();
-
-      button.innerText = "▶";
-      mainPlay.innerText = "▶";
-    }
-
-    audio.volume = volume.value;
-
-    audio.addEventListener("timeupdate", updatePlayer);
+  if (currentAudio && currentAudio !== audio) {
+    currentAudio.pause();
   }
 
-  // ===== UPDATE =====
-  function updatePlayer() {
-    if (!currentAudio) return;
+  currentAudio = audio;
+  currentBtn = btn;
 
-    const progress =
-      (currentAudio.currentTime / currentAudio.duration) * 100;
+  showPlayer();
+  now.textContent = btn.parentElement.querySelector("div").textContent;
 
-    seek.value = progress || 0;
+  audio.volume = volume.value;
+  audio.play();
 
-    playerTime.innerText =
-      formatTime(currentAudio.currentTime) +
-      " / " +
-      formatTime(currentAudio.duration);
+  btn.innerText = "❚❚";
+  playBtn.innerText = "❚❚";
+
+  audio.onended = nextSong;
+  audio.ontimeupdate = updateSeek;
+}
+
+/* ===== NEXT SONG ===== */
+function nextSong() {
+  const i = songs.indexOf(currentAudio.id);
+  const next = songs[i + 1];
+
+  if (!next) return reset();
+
+  const btn = document.querySelector(`button[onclick*="${next}"]`);
+  playSong(next, btn);
+}
+
+/* ===== PLAY/PAUSE ===== */
+playBtn.onclick = () => {
+  if (!currentAudio) return;
+
+  if (currentAudio.paused) {
+    currentAudio.play();
+    playBtn.innerText = "❚❚";
+    if (currentBtn) currentBtn.innerText = "❚❚";
+  } else {
+    currentAudio.pause();
+    playBtn.innerText = "▶";
+    if (currentBtn) currentBtn.innerText = "▶";
   }
+};
 
-  // ===== MAIN PLAY =====
-  mainPlay.addEventListener("click", () => {
-    if (!currentAudio) return;
+/* ===== SEEK ===== */
+seek.oninput = () => {
+  if (!currentAudio) return;
+  currentAudio.currentTime = (seek.value / 100) * currentAudio.duration;
+};
 
-    if (currentAudio.paused) {
-      currentAudio.play();
+/* ===== VOLUME ===== */
+volume.oninput = () => {
+  if (!currentAudio) return;
+  currentAudio.volume = volume.value;
+};
 
-      mainPlay.innerText = "❚❚";
+/* ===== UPDATE ===== */
+function updateSeek() {
+  if (!currentAudio) return;
+  seek.value = (currentAudio.currentTime / currentAudio.duration) * 100;
+}
 
-      if (currentButton)
-        currentButton.innerText = "❚❚";
-    } else {
-      currentAudio.pause();
-
-      mainPlay.innerText = "▶";
-
-      if (currentButton)
-        currentButton.innerText = "▶";
-    }
-  });
-
-  // ===== SEEK =====
-  seek.addEventListener("input", () => {
-    if (!currentAudio) return;
-
-    currentAudio.currentTime =
-      (seek.value / 100) * currentAudio.duration;
-  });
-
-  // ===== VOLUME =====
-  volume.addEventListener("input", () => {
-    if (!currentAudio) return;
-
-    currentAudio.volume = volume.value;
-  });
-
-  // ===== LOOP =====
-  loopBtn.addEventListener("click", () => {
-    isLooping = !isLooping;
-
-    loopBtn.classList.toggle("active");
-
-    if (currentAudio) {
-      currentAudio.loop = isLooping;
-    }
-  });
-
-  // ===== NEXT SONG =====
-  document.querySelectorAll("audio").forEach(audio => {
-    audio.addEventListener("ended", () => {
-
-      if (isLooping) return;
-
-      const currentIndex = tracks.indexOf(audio.id);
-      const nextIndex = currentIndex + 1;
-
-      if (nextIndex < tracks.length) {
-        const nextId = tracks[nextIndex];
-
-        const nextButton = document.querySelector(
-          \`button[onclick*="\${nextId}"]\`
-        );
-
-        toggleAudio(nextId, nextButton);
-      } else {
-        resetPlayer();
-      }
-    });
-  });
-
-  // ===== RESET =====
-  function resetPlayer() {
-    mainPlay.innerText = "▶";
-
-    if (currentButton)
-      currentButton.innerText = "▶";
-
-    seek.value = 0;
-
-    playerSong.innerText = "Nothing Playing";
-    playerTime.innerText = "0:00 / 0:00";
-  }
-
-  // ===== TIME =====
-  function formatTime(seconds) {
-    if (isNaN(seconds)) return "0:00";
-
-    const mins = Math.floor(seconds / 60);
-
-    const secs = Math.floor(seconds % 60)
-      .toString()
-      .padStart(2, "0");
-
-    return mins + ":" + secs;
-  }
+/* ===== RESET ===== */
+function reset() {
+  playBtn.innerText = "▶";
+  now.textContent = "Nothing Playing";
+  seek.value = 0;
+  currentAudio = null;
+  currentBtn = null;
+}
 </script>
 
 </body>
