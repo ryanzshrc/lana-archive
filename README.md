@@ -16,3 +16,6 @@ ___
 5. Fine China
 6. Serial Killer
 7. Queen of Disaster
+8. Trash Magic
+9. Afraid
+10. St. Tropez
