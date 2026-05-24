@@ -46,5 +46,11 @@
     "era": "Lizzy Grant Era",
     "art": "art/trashmagic.jpg",
     "src": "music/trashmagic.m4a"
+  },
+ {
+    "title": "Afraid",
+    "era": "Born To Die Era",
+    "art": "art/afraid.jpg",
+    "src": "music/afraid.m4a"
   }
 ]
