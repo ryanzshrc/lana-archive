@@ -47,16 +47,16 @@
     "art": "art/trashmagic.jpg",
     "src": "music/trashmagic.m4a"
   },
- {
+  {
     "title": "Afraid",
     "era": "Born To Die Era",
     "art": "art/afraid.jpg",
     "src": "music/afraid.m4a"
-  }, 
- {
+  },
+  {
     "title": "St. Tropez",
     "era": "Lizzy Grant Era",
     "art": "art/sttropez.jpg",
     "src": "music/sttropez.m4a"
- },
+  }
 ]
