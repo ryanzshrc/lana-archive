@@ -123,7 +123,7 @@
 
     @media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 800px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 500px)  { .grid { grid-template-columns: 1fr; } }
+    @media (max-width: 500px)  { .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
 
     .card {
       background: rgba(255,255,255,0.05);
@@ -216,30 +216,50 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 82px;
-
       background: rgba(10,10,10,0.95);
       backdrop-filter: blur(24px);
       border-top: 1px solid rgba(255,255,255,0.08);
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
       z-index: 9999;
-
       transform: translateY(100%);
       transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .music-player.visible { transform: translateY(0); }
 
-    .player-info { width: 220px; }
+    /* seek strip sits at the very top of the player bar */
+    .player-seek-strip {
+      width: 100%;
+      padding: 0;
+      line-height: 0;
+    }
+
+    #seek {
+      width: 100%;
+      display: block;
+      border-radius: 0;
+      height: 3px;
+      cursor: pointer;
+    }
+
+    /* main row inside player */
+    .player-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 72px;
+      gap: 16px;
+    }
+
+    .player-info {
+      width: 220px;
+      flex-shrink: 0;
+    }
 
     #player-song {
       font-weight: 600;
       font-size: 0.95rem;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -253,7 +273,6 @@
       align-items: center;
       gap: 14px;
       max-width: 700px;
-      margin: 0 20px;
     }
 
     .player-btns {
@@ -288,7 +307,6 @@
       background: transparent;
       color: #666;
       cursor: pointer;
-      font-size: 0.8rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -297,6 +315,26 @@
 
     #loop-btn:hover { color: #aaa; border-color: rgba(255,255,255,0.3); }
     #loop-btn.active { color: white; border-color: white; background: rgba(255,255,255,0.1); }
+
+    /* desktop seek lives inside player-center */
+    .desktop-seek { flex: 1; }
+
+    .player-right {
+      width: 140px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    #vol-icon {
+      flex-shrink: 0;
+      opacity: 0.6;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    #vol-icon:hover { opacity: 1; }
 
     /* ===== RANGE INPUTS ===== */
     input[type="range"] {
@@ -333,40 +371,58 @@
       cursor: pointer;
     }
 
-    #seek { width: 100%; }
-
-    .player-right {
-      width: 140px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-
-    #vol-icon {
-      flex-shrink: 0;
-      opacity: 0.6;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-
-    #vol-icon:hover { opacity: 1; }
-
     #volume { width: 100%; }
 
-    @media (max-width: 700px) {
-      .music-player {
-        flex-direction: column;
-        height: auto;
-        padding: 14px;
-        gap: 12px;
+    /* ===== MOBILE ===== */
+    @media (max-width: 600px) {
+      body { padding-bottom: 80px; }
+
+      /* header */
+      .header { flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 20px; }
+      .search-wrap { width: 100%; margin-bottom: 0; }
+      h1 { font-size: 2.4rem; }
+
+      /* grid: 2 cols, horizontal cards */
+      .grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+
+      .card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-radius: 14px;
       }
-      .player-info, .player-right, .player-center {
-        width: 100%;
-        max-width: 100%;
-        margin: 0;
+      .card img {
+        width: 60px;
+        height: 60px;
+        flex-shrink: 0;
+        aspect-ratio: 1/1;
+        border-radius: 10px 0 0 10px;
       }
-      body { padding-bottom: 180px; }
+      .content { padding: 6px 8px; flex: 1; min-width: 0; }
+      .era { font-size: 0.55rem; margin-bottom: 2px; letter-spacing: 0.15em; }
+      .title { font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      button.play-btn { width: 28px; height: 28px; font-size: 0.6rem; flex-shrink: 0; }
+
+      /* player: seek strip on top, one compact row below */
+      .player-inner {
+        padding: 0 14px;
+        height: 58px;
+        gap: 10px;
+      }
+
+      .player-info { width: auto; flex: 1; min-width: 0; }
+      #player-song { font-size: 0.82rem; }
+      #player-time { display: none; }
+
+      /* hide desktop seek clone and volume on mobile */
+      .desktop-seek { display: none; }
+      .player-right { display: none; }
+
+      #main-play { width: 36px; height: 36px; font-size: 0.8rem; }
+      #loop-btn  { width: 26px; height: 26px; }
+
+      /* credit stacks */
+      .credit { flex-direction: column; gap: 4px; align-items: flex-start; margin-top: 32px; }
     }
   </style>
 </head>
@@ -402,36 +458,46 @@
   <!-- PLAYER -->
   <div class="music-player" id="player">
 
-    <div class="player-info">
-      <div id="player-song">Nothing Playing</div>
-      <div id="player-time">0:00 / 0:00</div>
-    </div>
-
-    <div class="player-center">
-      <div class="player-btns">
-        <button id="loop-btn" title="Loop">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="17 1 21 5 17 9"/>
-            <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
-            <polyline points="7 23 3 19 7 15"/>
-            <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
-          </svg>
-        </button>
-        <button id="main-play">▶</button>
-      </div>
-
+    <!-- seek strip: sits flush at top, works on both mobile and desktop -->
+    <div class="player-seek-strip">
       <input type="range" id="seek" min="0" max="100" value="0" />
     </div>
 
-    <div class="player-right">
-      <svg id="vol-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" onclick="toggleMute()">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-        <path id="vol-wave-1" d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-        <path id="vol-wave-2" d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-        <line id="vol-mute-line" x1="23" y1="9" x2="17" y2="15" style="display:none"/>
-        <line id="vol-mute-line2" x1="17" y1="9" x2="23" y2="15" style="display:none"/>
-      </svg>
-      <input type="range" id="volume" min="0" max="1" step="0.01" value="1" />
+    <!-- single inner row for all controls -->
+    <div class="player-inner">
+
+      <div class="player-info">
+        <div id="player-song">Nothing Playing</div>
+        <div id="player-time">0:00 / 0:00</div>
+      </div>
+
+      <div class="player-center">
+        <div class="player-btns">
+          <button id="loop-btn" title="Loop">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="17 1 21 5 17 9"/>
+              <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+              <polyline points="7 23 3 19 7 15"/>
+              <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+            </svg>
+          </button>
+          <button id="main-play">▶</button>
+        </div>
+        <!-- desktop only: seek bar clone inside center -->
+        <div class="desktop-seek" id="desktop-seek-spacer"></div>
+      </div>
+
+      <div class="player-right">
+        <svg id="vol-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" onclick="toggleMute()">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path id="vol-wave-1" d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          <path id="vol-wave-2" d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          <line id="vol-mute-line" x1="23" y1="9" x2="17" y2="15" style="display:none"/>
+          <line id="vol-mute-line2" x1="17" y1="9" x2="23" y2="15" style="display:none"/>
+        </svg>
+        <input type="range" id="volume" min="0" max="1" step="0.01" value="1" />
+      </div>
+
     </div>
   </div>
 
