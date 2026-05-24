@@ -686,8 +686,9 @@
         const res = await fetch("tracks.json");
         if (!res.ok) throw new Error();
         tracks = await res.json();
-      } catch {
-        grid.innerHTML = `<span style="color:#555;font-style:italic;font-size:0.85rem">Could not load tracks.json</span>`;
+      } catch (err) {
+        console.error("tracks.json fetch failed:", err);
+        grid.innerHTML = `<span style="color:#555;font-style:italic;font-size:0.85rem">Could not load tracks.json — check console for details</span>`;
         return;
       }
 
